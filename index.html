@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vigilantia — Verificación de seguridad y referencias de empleadas domésticas</title>
+  <meta name="description" content="Consulta única ($19.900 COP) para verificar el background de seguridad y referencias de empleadas domésticas con consentimiento digital y cumplimiento de Habeas Data." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Vigilantia — Verificación de seguridad y referencias de empleadas domésticas" />
+  <meta property="og:description" content="Consulta única ($19.900 COP). Consentimiento digital obligatorio. Información colaborativa moderada y segura." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tudominio.com" />
+  <meta property="og:image" content="https://tudominio.com/og-image.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vigilantia — Verificación de seguridad" />
+  <meta name="twitter:description" content="Consulta única ($19.900 COP). Consentimiento digital y Habeas Data." />
+  <meta name="twitter:image" content="https://tudominio.com/og-image.jpg" />
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f3f1ff', 100: '#e9e4ff', 200: '#cabdff', 300: '#a892ff',
+              400: '#8a6eff', 500: '#6f4bff', 600: '#5b3de6', 700: '#4a32bf',
+              800: '#3b2999', 900: '#2f217a'
+            }
+          },
+          boxShadow: { soft: '0 10px 30px rgba(2,8,23,0.07)' }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Badges estilo "tu proyecto" (chips compactas con gradiente e icono a la izquierda) */
+    .tag{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .6rem;border-radius:9999px;font-size:.78rem;font-weight:700;border:1px solid transparent;box-shadow:0 0 0 1px rgba(0,0,0,0.02) inset;transition:transform .15s ease, filter .15s ease, box-shadow .15s ease}
+    .tag:hover{transform:translateY(-1px);filter:brightness(1.03);box-shadow:0 10px 22px rgba(2,8,23,0.08)}
+    .tag-ico{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px}
+    .tag svg{width:13px;height:13px}
+    .tag-green{color:#065f46;background:linear-gradient(90deg,#d1fae5 0%,#bbf7d0 100%);border-color:#a7f3d0}
+    .tag-green .tag-ico{background:rgba(5,150,105,.15)}
+    .tag-blue{color:#1e3a8a;background:linear-gradient(90deg,#dbeafe 0%,#c7d2fe 100%);border-color:#bfdbfe}
+    .tag-blue .tag-ico{background:rgba(30,64,175,.12)}
+    .tag-amber{color:#92400e;background:linear-gradient(90deg,#ffedd5 0%,#fde68a 100%);border-color:#fed7aa}
+    .tag-amber .tag-ico{background:rgba(146,64,14,.12)}
+
+    /* Carrusel/rail de métodos de pago */
+    .pay-rail{scrollbar-width:thin}
+    .pay-icon{transition:transform .15s ease, filter .15s ease;}
+    .pay-icon:hover{transform:translateY(-2px) scale(1.04);filter:brightness(1.1)}
+
+    /* --- Responsive helpers --- */
+    /* Evitar que el sticky CTA tape contenido en mobile */
+    @media (max-width:640px){
+      body{padding-bottom:calc(64px + env(safe-area-inset-bottom));}
+    }
+    /* Títulos con mejor reparto de líneas en mobile */
+    h1, h2{ text-wrap: balance; }
+
+    /* Ajustes finos para pantallas muy pequeñas */
+    .btn-fluid{} /* marcador */
+    @media (max-width:400px){
+      .hero-title{font-size:1.6rem;line-height:1.25;}
+      .btn-fluid{width:100%;}
+    }
+    @media (max-width:480px){
+      .btn-fluid{width:100%;}
+    }
+  </style>
+
+  <!-- Schema.org FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question","name": "¿La empleada debe autorizar?","acceptedAnswer": {"@type": "Answer","text": "Sí. Usamos consentimiento digital firmado (en pantalla) antes de procesar cualquier dato."}},
+      {"@type": "Question","name": "¿Qué recibo por $19.900?","acceptedAnswer": {"@type": "Answer","text": "Un reporte completo con historial, referencias, calificaciones y soportes, además de trazabilidad de cambios."}},
+      {"@type": "Question","name": "¿Cuánto tarda el reporte?","acceptedAnswer": {"@type": "Answer","text": "En minutos si existen registros. La consulta queda activa y se actualiza continuamente."}},
+      {"@type": "Question","name": "¿Cómo protegen los datos?","acceptedAnswer": {"@type": "Answer","text": "Cifrado, acceso controlado, auditoría de consultas y cumplimiento de Habeas Data (Colombia)."}},
+      {"@type": "Question","name": "¿Puedo pedir que se eliminen datos?","acceptedAnswer": {"@type": "Answer","text": "Sí. Derecho de acceso, rectificación y supresión según la normativa aplicable."}},
+      {"@type": "Question","name": "¿Quién puede calificar?","acceptedAnswer": {"@type": "Answer","text": "Empleadores verificados. Toda aportación pasa por moderación y requiere evidencias."}}
+    ]
+  }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <!-- Sticky CTA (mobile) -->
+  <div id="stickyBar" class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="text-sm">
+        <div class="font-semibold">Consulta única</div>
+        <div class="text-primary-700 font-bold">$19.900 COP</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="btnReportarSticky" href="#reportes"
+           class="inline-flex items-center justify-center px-4 py-2 rounded-xl font-semibold bg-white border-2 border-sky-500 text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-200">Reportar</a>
+        <a data-testid="cta-mobile" href="#pago"
+           class="inline-flex items-center justify-center px-6 py-3 rounded-2xl text-white font-semibold shadow-[0_8px_18px_rgba(88,28,135,0.25)] bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-300">Hacer consulta</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-violet-50 via-white to-blue-50"></div>
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2" aria-label="Inicio">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-white font-bold">V</span>
+        <span class="font-bold text-lg">Vigilantia</span>
+      </a>
+      <!-- Desktop menu -->
+      <div class="hidden md:flex items-center gap-6">
+        <a href="#como" class="text-sm font-medium hover:text-primary-700">Cómo funciona</a>
+        <a href="#legal" class="text-sm font-medium hover:text-primary-700">Legalidad</a>
+        <a href="#faq" class="text-sm font-medium hover:text-primary-700">Preguntas frecuentes</a>
+        <a href="#contacto" class="text-sm font-medium hover:text-primary-700">Contacto</a>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <a id="btnReportarHeader" href="#reportes" class="inline-flex items-center justify-center px-5 py-2.5 rounded-2xl font-semibold bg-white border-2 border-sky-500 text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-200">Reportar info</a>
+        <a data-testid="cta-header" href="#pago" class="inline-flex items-center justify-center px-6 py-3 rounded-2xl text-white font-semibold shadow-[0_8px_18px_rgba(88,28,135,0.25)] bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-300">Hacer consulta por $19.900</a>
+      </div>
+      <!-- Mobile hamburger -->
+      <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-lg p-2 border border-slate-200 text-slate-700" aria-controls="mobileMenu" aria-expanded="false" aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </nav>
+    <!-- Mobile menu panel -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-slate-200 bg-white/95 backdrop-blur">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid gap-3">
+        <a href="#como" class="py-2 font-medium">Cómo funciona</a>
+        <a href="#legal" class="py-2 font-medium">Legalidad</a>
+        <a href="#faq" class="py-2 font-medium">Preguntas frecuentes</a>
+        <a href="#contacto" class="py-2 font-medium">Contacto</a>
+        <div class="flex items-center gap-2 pt-1">
+          <a id="btnReportarMobile" href="#reportes" class="inline-flex items-center justify-center px-4 py-2 rounded-xl font-semibold bg-white border-2 border-sky-500 text-sky-700 hover:bg-sky-50">Reportar info</a>
+          <a href="#pago" class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-white font-semibold shadow-[0_8px_18px_rgba(88,28,135,0.25)] bg-gradient-to-r from-violet-600 to-blue-600">Hacer consulta</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-violet-50 via-white to-blue-50"></div>
+    <div class="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-violet-400/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="hero-title text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-slate-900">
+          Verifica el <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">background de seguridad</span> y referencias de empleadas domésticas en minutos <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">con IA</span>.
+        </h1>
+        <p class="mt-5 text-lg text-slate-700">Consulta única con consentimiento digital. Información colaborativa, moderada y segura.</p>
+        <div class="mt-6 flex flex-wrap gap-3 items-center">
+          <a data-testid="cta-hero" href="checkout.html"          class="btn-fluid inline-flex items-center justify-center px-6 py-3 rounded-2xl text-white font-semibold shadow-[0_8px_18px_rgba(88,28,135,0.25)] bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-300">Hacer consulta por $19.900</a>
+          <a href="#como" class="inline-flex items-center justify-center px-6 py-3 rounded-2xl font-semibold bg-white border-2 border-violet-500 text-violet-700 hover:bg-violet-50 hover:border-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-200">Cómo funciona</a>
+          <a id="btnReportarHero" href="#reportes" class="inline-flex items-center justify-center px-6 py-3 rounded-2xl font-semibold bg-white border-2 border-sky-500 text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-200">Reportar información</a>
+        </div>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <span class="tag tag-green">
+            <span class="tag-ico" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 12l2 2 6-6" stroke="#065f46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="3" y="4" width="14" height="16" rx="2" stroke="#065f46" stroke-width="1.8"/>
+              </svg>
+            </span>
+            Consentimiento digital firmado
+          </span>
+          <span class="tag tag-blue">
+            <span class="tag-ico" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="#1e3a8a" stroke-width="1.8"/>
+                <path d="M9 12l2 2 4-4" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Cumplimos Habeas Data
+          </span>
+        </div>
+      </div>
+      <div class="relative">
+        <img id="heroImage" data-testid="hero-image" src="/assets/hero-vigilantia.jpg" alt="Familia segura en su hogar con verificación activa" class="w-full h-auto rounded-2xl shadow-soft" loading="lazy" sizes="(min-width: 768px) 560px, 100vw" />
+        <div class="absolute bottom-4 right-4 backdrop-blur bg-white/80 border border-slate-200 rounded-full px-3 py-1.5 text-xs font-medium shadow-soft flex items-center gap-2">
+          <span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+          AI Verification Active
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beneficios principales -->
+  <section id="beneficios" class="pt-6 sm:pt-10 pb-6 bg-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white">
+            <!-- rayo -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3 class="mt-4 font-semibold">Rapidez</h3>
+          <p class="mt-1 text-sm text-slate-600">Resultados instantáneos con nuestro motor de búsqueda AI.</p>
+        </article>
+        <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white">
+            <!-- escudo -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 5-4 8-7 9-3-1-7-4-7-9V6l7-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          </div>
+          <h3 class="mt-4 font-semibold">Legalidad</h3>
+          <p class="mt-1 text-sm text-slate-600">Cumplimos con Habeas Data y protección de datos personales.</p>
+        </article>
+        <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white">
+            <!-- usuarios -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <h3 class="mt-4 font-semibold">Comunidad moderada</h3>
+          <p class="mt-1 text-sm text-slate-600">Información verificada y moderada para garantizar confiabilidad.</p>
+        </article>
+        <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white">
+            <!-- documento -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+          </div>
+          <h3 class="mt-4 font-semibold">Reporte claro</h3>
+          <p class="mt-1 text-sm text-slate-600">Documento detallado y fácil de entender con toda la información relevante.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+<section id="como" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Cómo funciona</h2>
+      <div class="mt-8 grid md:grid-cols-4 gap-6">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="text-primary-700 text-3xl font-bold">1</div>
+          <h3 class="mt-2 font-semibold">Ingresa datos básicos</h3>
+          <p class="mt-1 text-sm text-slate-600">Nombre y número de identificación de la empleada.</p>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="text-primary-700 text-3xl font-bold">2</div>
+          <h3 class="mt-2 font-semibold">Consentimiento digital</h3>
+          <p class="mt-1 text-sm text-slate-600">Firma en pantalla, obligatorio antes de consultar.</p>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="text-primary-700 text-3xl font-bold">3</div>
+          <h3 class="mt-2 font-semibold">Generamos el reporte</h3>
+          <p class="mt-1 text-sm text-slate-600">Datos colaborativos moderados y fuentes públicas disponibles.</p>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="text-primary-700 text-3xl font-bold">4</div>
+          <h3 class="mt-2 font-semibold">Paga y visualiza</h3>
+          <p class="mt-1 text-sm text-slate-600">Cancela $19.900 para ver el reporte completo.</p>
+        </div>
+      </div>
+
+      <div id="noRecords" class="hidden mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800">
+        <strong>Aún no hay historial.</strong> Tu consulta quedará activa y te notificaremos si se agregan datos.
+        <button class="ml-4 underline" onclick="document.getElementById('noRecords').classList.add('hidden')">Ocultar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ¿Qué incluye la consulta? -->
+  <section id="incluye" class="py-16 sm:py-20 bg-gradient-to-b from-white to-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">¿Qué incluye la consulta?</h2>
+      <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Verificación de identidad y documento -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- id card -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="7" y1="9" x2="12" y2="9"/><circle cx="17" cy="13" r="2"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Verificación de identidad y documento</h3>
+            <p class="mt-1 text-sm text-slate-600">Con foto y validaciones contra fuentes disponibles.</p>
+          </div>
+        </div>
+        <!-- Historial laboral colaborativo -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- briefcase -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Historial laboral colaborativo</h3>
+            <p class="mt-1 text-sm text-slate-600">Crowdsourcing moderado y con evidencias.</p>
+          </div>
+        </div>
+        <!-- Calificaciones y comentarios -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- star -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Calificaciones y comentarios</h3>
+            <p class="mt-1 text-sm text-slate-600">De empleadores verificados y auditables.</p>
+          </div>
+        </div>
+        <!-- Reporte de seguridad -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- shield -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 6-4 9-7 10-3-1-7-4-7-10V6l7-4z"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Reporte de seguridad</h3>
+            <p class="mt-1 text-sm text-slate-600">Integración con antecedentes públicos disponibles.</p>
+          </div>
+        </div>
+        <!-- Trazabilidad y registro de cambios -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- history/trace -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Trazabilidad y registro de cambios</h3>
+            <p class="mt-1 text-sm text-slate-600">Registro completo de consultas y modificaciones para auditoría.</p>
+          </div>
+        </div>
+        <!-- Actualizaciones posteriores -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+          <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+            <!-- bell/updates -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div>
+            <h3 class="font-semibold">Actualizaciones posteriores</h3>
+            <p class="mt-1 text-sm text-slate-600">Notificaciones si se agregan datos nuevos hasta por 6 meses.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Reportes y Validación -->
+<section id="reportes" class="relative py-16 sm:py-24 overflow-hidden">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-slate-50 via-white to-slate-100"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Reportes y Validación</h2>
+      <p class="mt-3 text-slate-700 max-w-2xl mx-auto">
+        La comunidad ayuda a mantener segura la red. Los reportes requieren evidencias y pasan por verificación para evitar difamación.
+      </p>
+      <div class="mt-4 flex items-center justify-center gap-2">
+        <span class="tag tag-blue">
+          <span class="tag-ico" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="#1e3a8a" stroke-width="1.8"/>
+              <path d="M9 12l2 2 4-4" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Moderación anti-difamación
+        </span>
+        <span class="tag tag-green">
+          <span class="tag-ico" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12l2 2 6-6" stroke="#065f46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="3" y="4" width="14" height="16" rx="2" stroke="#065f46" stroke-width="1.8"/>
+            </svg>
+          </span>
+          Evidencias obligatorias
+        </span>
+      </div>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-6">
+      <!-- Card: Reportar información -->
+      <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+          <!-- ícono alerta -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12" y2="17"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Reportar información</h3>
+          <p class="mt-1 text-sm text-slate-600">
+            Si tienes información relevante sobre una empleada, compártela para ayudar a otros empleadores. Todo reporte se verifica con evidencias.
+          </p>
+          <ul class="mt-2 text-sm text-slate-600 list-disc pl-5">
+            <li>Adjunta fotos, documentos o chats que respalden los hechos.</li>
+            <li>Tu identidad puede permanecer reservada si lo prefieres.</li>
+          </ul>
+
+          <a id="btnReportar"
+             href="mailto:hola@vigilantia.co?subject=Reporte%20Vigilantia&body=Quiero%20reportar%20informaci%C3%B3n%20sobre%20una%20empleada.%0A%0ANombre:%20__%0AIdentificaci%C3%B3n:%20__%0ACiudad:%20__%0AEvidencias%20adjuntas:%20__%0ADescripci%C3%B3n:%20__"
+             class="mt-4 inline-flex items-center justify-center px-5 py-2.5 rounded-2xl text-white font-semibold bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-300">
+            Hacer un reporte
+          </a>
+        </div>
+      </article>
+
+      <!-- Card: Validación facial -->
+      <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft flex items-start gap-4">
+        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary-700">
+          <!-- ícono usuario + check -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+            <path d="M16 11l2 2 4-4"></path>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold">Validación facial</h3>
+          <p class="mt-1 text-sm text-slate-600">
+            Comparamos la foto reciente con documentos y registros previos para confirmar identidad y evitar suplantaciones.
+          </p>
+          <p class="mt-2 text-xs text-slate-500">* Disponible durante la verificación y en actualizaciones periódicas.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Vista previa del reporte (sección separada para mayor relevancia) -->
+  <section id="preview" class="py-16 sm:py-20 bg-gradient-to-b from-white to-slate-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Vista previa del reporte</h2>
+        <button id="toggleSkeleton" class="text-sm font-semibold underline">Ver demo de carga</button>
+      </div>
+      <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+        <div id="skeleton" class="space-y-3 hidden">
+          <div class="h-4 bg-slate-200 rounded animate-pulse"></div>
+          <div class="h-4 bg-slate-200 rounded animate-pulse w-5/6"></div>
+          <div class="h-36 bg-slate-200 rounded animate-pulse"></div>
+          <div class="h-4 bg-slate-200 rounded animate-pulse w-3/4"></div>
+        </div>
+        <div id="reportPreview" class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="h-12 w-12 rounded-full bg-slate-200"></div>
+            <div>
+              <div class="font-semibold">Identidad verificada</div>
+              <div class="text-sm text-slate-600">Documento y foto coinciden</div>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-sm font-semibold">Historial laboral</div>
+              <div class="text-sm text-slate-600">3 empleadores verificados</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-sm font-semibold">Calificación</div>
+              <div class="text-sm text-slate-600">4.7 / 5</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="text-sm font-semibold">Reporte de seguridad</div>
+            <div class="text-sm text-slate-600">Sin coincidencias en registros públicos consultados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pago por consulta (full-bleed) -->
+  <section id="pago" class="py-16 sm:py-24 bg-gradient-to-r from-violet-600 to-blue-600 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm sm:text-base font-semibold opacity-90">Consulta con tecnología AI</p>
+      <h3 class="mt-2 text-4xl sm:text-5xl font-extrabold">$19.900 <span class="text-xl font-bold">COP</span></h3>
+      <p class="mt-2 text-sm sm:text-base opacity-90">Resultados precisos con inteligencia artificial</p>
+
+      <a id="btnPagar" href="checkout.html"
+         class="btn-fluid mt-8 inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-violet-800 font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-200"
+         aria-label="Pagar $19.900 y ver reporte">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-blue-600 text-white text-[12px]">💳</span>
+        Hacer consulta ahora
+      </a>
+
+      <!-- Icons de medios de pago (SVGs propios) -->
+      <div class="mt-10 flex flex-nowrap sm:flex-wrap items-center justify-center gap-5 overflow-x-auto sm:overflow-visible pay-rail px-1">
+        <!-- VISA tile -->
+        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
+          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa">
+            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
+            <text x="37" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#4a32bf" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">VISA</text>
+          </svg>
+        </div>
+        <!-- MASTERCARD tile -->
+        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
+          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mastercard">
+            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
+            <circle cx="34" cy="29" r="10" fill="#4a32bf"/>
+            <circle cx="40" cy="29" r="10" fill="#6f4bff" fill-opacity="0.9"/>
+            <circle cx="37" cy="29" r="4" fill="#ffffff" fill-opacity="0.85"/>
+          </svg>
+        </div>
+        <!-- AMEX tile -->
+        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
+          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="American Express">
+            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
+            <rect x="22" y="16" width="30" height="26" rx="4" fill="#4a32bf"/>
+            <text x="37" y="29" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">AM</text>
+            <text x="37" y="37" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">EX</text>
+          </svg>
+        </div>
+        <!-- EFECTIVO tile -->
+        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
+          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Efectivo">
+            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
+            <rect x="22" y="18" width="30" height="22" rx="6" fill="#4a32bf"/>
+            <circle cx="37" cy="29" r="5" fill="#ffffff"/>
+            <circle cx="28" cy="23" r="2" fill="#ffffff"/>
+            <circle cx="46" cy="35" r="2" fill="#ffffff"/>
+          </svg>
+        </div>
+        <!-- BANCO tile -->
+        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
+          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transferencia bancaria">
+            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
+            <path d="M37 18l18 6v16H19V24l18-6z" fill="#4a32bf"/>
+            <rect x="19" y="40" width="36" height="2.6" fill="#4a32bf"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Selector técnico de pasarela -->
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto text-slate-900">
+        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
+          <input type="radio" name="gateway" value="PayU" class="accent-violet-700" checked>
+          <span class="text-sm font-medium">PayU</span>
+        </label>
+        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
+          <input type="radio" name="gateway" value="MercadoPago" class="accent-violet-700">
+          <span class="text-sm font-medium">MercadoPago</span>
+        </label>
+        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
+          <input type="radio" name="gateway" value="Stripe" class="accent-violet-700">
+          <span class="text-sm font-medium">Stripe</span>
+        </label>
+      </div>
+      <p class="mt-3 text-xs opacity-90">* Integración técnica desde este selector; puedes ocultarlo en producción.</p>
+    </div>
+  </section>
+
+  <!-- Confianza y legalidad -->
+  <section id="legal" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Confianza y legalidad</h2>
+      <div class="mt-8 grid md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="tag tag-green">
+              <span class="tag-ico" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 12l2 2 6-6" stroke="#065f46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="3" y="4" width="14" height="16" rx="2" stroke="#065f46" stroke-width="1.8"/>
+                </svg>
+              </span>
+              Consentimiento digital obligatorio
+            </span>
+            <span class="tag tag-blue">
+              <span class="tag-ico" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" stroke="#1e3a8a" stroke-width="1.8"/>
+                  <path d="M9 12l2 2 4-4" stroke="#1e3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              Cumplimiento Habeas Data (Colombia)
+            </span>
+          </div>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li>• Derechos de acceso, rectificación y supresión</li>
+            <li>• Moderación anti-difamación con evidencias obligatorias</li>
+            <li>• Almacenamiento cifrado y control de acceso</li>
+            <li>• Auditoría de consultas</li>
+          </ul>
+          <details class="mt-3">
+            <summary class="text-sm font-semibold cursor-pointer">Saber más</summary>
+            <p class="mt-2 text-sm text-slate-600">Vigilantia cumple con la normativa de protección de datos aplicable en Colombia. Toda información personal se trata con base en el consentimiento informado de la persona titular y puede ser consultada, rectificada o suprimida conforme a la ley. Conoce nuestra Política de Tratamiento de Datos.</p>
+          </details>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <h3 class="font-semibold">Comunidad moderada</h3>
+          <p class="mt-2 text-sm text-slate-600">Los reportes de novedades e incidencias deben incluir evidencias que respalden los hechos. Todo aporte pasa por control de verificación antes de publicarse para garantizar la veracidad.</p>
+          <p class="mt-2 text-sm text-slate-600">Los datos de contacto de las candidatas son verificados y actualizados. Garantía de devolución del 100% si no cumplimos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ <!-- Testimonios -->
+<section id="testimonios" class="py-16 sm:py-20 bg-gradient-to-b from-white to-primary-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Lo que dicen nuestros clientes</h2>
+    <div class="mt-8 grid md:grid-cols-3 gap-6">
+      <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+        <div class="font-semibold">Mariana R. — Bogotá</div>
+        <p class="mt-2 text-sm text-slate-600">“El reporte fue claro y me permitió contratar con tranquilidad. El proceso fue muy rápido.”</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+        <div class="font-semibold">Carlos P. — Medellín</div>
+        <p class="mt-2 text-sm text-slate-600">“Me encantó que todo fuera legal, con consentimiento digital. La moderación me da confianza.”</p>
+      </article>
+      <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+        <div class="font-semibold">Lucía G. — Cali</div>
+        <p class="mt-2 text-sm text-slate-600">“Recibí una actualización a los meses con información relevante. Excelente servicio.”</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-16 sm:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Preguntas frecuentes</h2>
+    <div class="mt-6 grid md:grid-cols-2 gap-6">
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿La empleada debe autorizar?</summary>
+        <p class="mt-2 text-sm text-slate-600">Sí. Usamos consentimiento digital firmado (en pantalla) antes de procesar cualquier dato.</p>
+      </details>
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿Qué recibo por $19.900?</summary>
+        <p class="mt-2 text-sm text-slate-600">Un reporte completo con historial, referencias, calificaciones y soportes, además de trazabilidad de cambios.</p>
+      </details>
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿Cuánto tarda el reporte?</summary>
+        <p class="mt-2 text-sm text-slate-600">En minutos si existen registros; tu consulta queda activa y se actualiza continuamente.</p>
+      </details>
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿Cómo protegen los datos?</summary>
+        <p class="mt-2 text-sm text-slate-600">Cifrado, acceso controlado, auditoría y cumplimiento de Habeas Data (Colombia).</p>
+      </details>
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿Puedo pedir que se eliminen datos?</summary>
+        <p class="mt-2 text-sm text-slate-600">Sí, puedes ejercer tus derechos de acceso, rectificación y supresión.</p>
+      </details>
+      <details class="p-5 rounded-2xl border border-slate-200 bg-slate-50">
+        <summary class="font-semibold cursor-pointer">¿Quién puede calificar?</summary>
+        <p class="mt-2 text-sm text-slate-600">Empleadores verificados. Todo se modera y debe incluir evidencias.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Final -->
+<section class="py-16 sm:py-20 bg-gradient-to-r from-violet-600 to-blue-600 text-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-2xl sm:text-3xl font-extrabold">Haz tu consulta ahora</h2>
+    <p class="mt-2 opacity-90">Protege a tu familia y tu hogar con información verificada y legal.</p>
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+      <a href="#pago"
+         class="inline-flex items-center justify-center px-7 py-3 rounded-2xl bg-white text-violet-800 font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-200">
+        Pagar $19.900 y ver reporte
+      </a>
+      <a href="#reportes"
+         class="inline-flex items-center justify-center px-6 py-3 rounded-2xl font-semibold bg-white border-2 border-sky-500 text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-200">
+        Reportar información
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contacto" class="bg-slate-900 text-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-4 gap-8">
+    <div>
+      <div class="font-bold text-lg">Vigilantia</div>
+      <p class="mt-2 text-sm text-slate-400">Verificación de seguridad y referencias para empleadas domésticas en Colombia.</p>
+    </div>
+    <div>
+      <div class="font-semibold">Legal</div>
+      <ul class="mt-2 space-y-1 text-sm">
+        <li><a href="#" class="hover:underline">Política de Privacidad</a></li>
+        <li><a href="#" class="hover:underline">Términos de Uso</a></li>
+        <li><a href="#" class="hover:underline">Política de Tratamiento de Datos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold">Contacto</div>
+      <ul class="mt-2 space-y-2 text-sm">
+        <li class="flex items-center gap-2"><span aria-hidden="true">📧</span><a href="mailto:hola@vigilantia.co" class="hover:underline">hola@vigilantia.co</a></li>
+        <li class="flex items-center gap-2"><span aria-hidden="true">📞</span><a href="tel:+5712345678" class="hover:underline">+57 1 2345678</a></li>
+        <li class="flex items-center gap-2"><span aria-hidden="true">📍</span><span>Bogotá, Colombia</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold">Síguenos</div>
+      <div class="mt-2 flex items-center gap-3 text-sm">
+        <a href="#" class="hover:underline">Facebook</a>
+        <a href="#" class="hover:underline">Twitter</a>
+        <a href="#" class="hover:underline">Instagram</a>
+        <a href="#" class="hover:underline">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-slate-800 py-4 text-center text-xs text-slate-400">
+    © <span id="year"></span> Vigilantia. Todos los derechos reservados.
+  </div>
+</footer>

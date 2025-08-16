@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vigilantia — Checkout (Stepper) Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Chips (etiquetas) */
+    .chip{padding:.5rem .75rem;border-radius:9999px;border:1.5px solid #a78bfa;background:#fff;color:#6d28d9;font-weight:600;font-size:.85rem;cursor:pointer;user-select:none;transition:transform .12s ease,box-shadow .2s ease}
+    .chip:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+    .chip:active{transform:scale(.98)}
+    .chip.active{background:linear-gradient(90deg,#ede9fe,#e0e7ff);border-color:#7c3aed;color:#4c1d95;box-shadow:0 6px 16px rgba(124,58,237,.12)}
+
+    /* Stepper */
+    .hidden-el{display:none}
+    .step{display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none}
+    .node{height:2rem;width:2rem;border-radius:9999px;display:grid;place-content:center;font-weight:700}
+    .node-done{background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff}
+    .node-current{background:#fff;border:2px solid #7c3aed;color:#7c3aed;box-shadow:0 4px 14px rgba(124,58,237,.2)}
+    .node-upcoming{background:#e5e7eb;color:#374151}
+    .step.locked{pointer-events:none;opacity:.6;cursor:not-allowed}
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <header class="bg-white border-b">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl text-white font-bold" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">V</span>
+        <span class="font-bold">Vigilantia • Checkout</span>
+      </div>
+      <div class="hidden sm:block text-sm text-slate-600">Demo de flujo — $19.900 COP</div>
+    </div>
+  </header>
+
+  <!-- Stepper -->
+  <section class="bg-white border-b">
+    <div class="max-w-4xl mx-auto px-4 py-6">
+      <h1 class="text-lg sm:text-xl font-semibold">Completa tu proceso en 4 pasos</h1>
+      <ol class="mt-4 flex items-start justify-between text-xs sm:text-sm">
+        <li id="nav1" class="step"><span id="node-1" class="node node-current">1</span><span>Tu información</span></li>
+        <li id="nav2" class="step"><span id="node-2" class="node node-upcoming">2</span><span>Datos de la empleada</span></li>
+        <li id="nav3" class="step"><span id="node-3" class="node node-upcoming">3</span><span>Confirmación de pago</span></li>
+        <li id="nav4" class="step"><span id="node-4" class="node node-upcoming">4</span><span>Resumen y envío</span></li>
+      </ol>
+      <div class="relative mt-3 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+        <div id="stepBar" class="h-full bg-gradient-to-r from-violet-600 to-blue-600 transition-all duration-300" style="width:0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <!-- Paso 1: Datos del comprador (Lead) -->
+    <section id="step-1" class="space-y-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <h2 class="font-semibold text-lg">1) Tus datos</h2>
+        <p class="text-sm text-slate-600 mt-1">Ingresa tus datos para continuar.</p>
+        <form id="leadForm" class="mt-4 grid sm:grid-cols-2 gap-4">
+          <label class="text-sm">Nombre completo
+            <input id="leadName" type="text" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="Tu nombre" />
+          </label>
+          <label class="text-sm">Correo
+            <input id="leadEmail" type="email" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="tucorreo@email.com" />
+          </label>
+          <label class="text-sm sm:col-span-2">Celular (WhatsApp)
+            <input id="leadPhone" type="tel" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="+57 300 000 0000" />
+          </label>
+          <div class="sm:col-span-2">
+            <div class="text-sm font-medium">¿Qué tipo de empleada estás buscando?</div>
+            <p class="text-xs text-slate-500">Elige una o varias etiquetas.</p>
+            <div id="leadChips" class="mt-2 flex flex-wrap gap-2">
+              <button type="button" class="chip" aria-pressed="false">Aseo general</button>
+              <button type="button" class="chip" aria-pressed="false">Cocina</button>
+              <button type="button" class="chip" aria-pressed="false">Niñera</button>
+              <button type="button" class="chip" aria-pressed="false">Oficios varios</button>
+              <button type="button" class="chip" aria-pressed="false">Cuidado adulto mayor</button>
+              <button type="button" class="chip" aria-pressed="false">Mascotas</button>
+              <button type="button" class="chip" aria-pressed="false">Interna</button>
+              <button type="button" class="chip" aria-pressed="false">Por días</button>
+              <button type="button" class="chip" aria-pressed="false">Otra</button>
+            </div>
+            <input id="leadTags" type="hidden" />
+            <div id="chipError" class="hidden mt-1 text-xs font-semibold text-red-600">Selecciona al menos una etiqueta.</div>
+          </div>
+          <div class="sm:col-span-2 flex items-center justify-end gap-3 pt-2">
+            <button type="button" id="goto2" class="px-5 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110">Continuar</button>
+          </div>
+        </form>
+        <div id="leadSavedNote" class="hidden mt-3 text-xs text-emerald-700">Tus datos se guardaron para continuar el proceso.</div>
+      </div>
+    </section>
+
+    <!-- Paso 2: Datos de la empleada -->
+    <section id="step-2" class="space-y-6 hidden-el">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <h2 class="font-semibold text-lg">2) Datos de la empleada</h2>
+        <p class="text-sm text-slate-600 mt-1">Solo necesitamos nombre y celular para continuar al pago.</p>
+
+        <form id="employeeForm4" class="mt-5 grid sm:grid-cols-2 gap-4">
+          <label class="text-sm">Nombres
+            <input id="empFirst4" type="text" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="Ej. Ana María" />
+          </label>
+          <label class="text-sm">Apellidos
+            <input id="empLast4" type="text" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="Ej. Pérez López" />
+          </label>
+          <label class="text-sm sm:col-span-2">Celular de la empleada (WhatsApp)
+            <input id="empPhone4" type="tel" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="+57 300 000 0000" />
+          </label>
+
+          <div class="sm:col-span-2 mt-2 flex items-center gap-2 text-xs text-slate-600">
+            <input id="chk-terms" type="checkbox" class="h-4 w-4 accent-purple-600" />
+            <label for="chk-terms">Acepto Términos, Condiciones y Política de Tratamiento de Datos.</label>
+          </div>
+
+          <div class="sm:col-span-2 flex items-center justify-end gap-3 pt-2">
+            <button id="payNow" type="button" disabled class="px-5 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed">Guardar y pagar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Paso 3: Confirmación -->
+    <section id="step-3" class="space-y-6 hidden-el">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft text-center">
+        <div class="mx-auto h-16 w-16 rounded-full grid place-content-center" style="background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff">✓</div>
+        <h2 class="mt-4 font-extrabold text-2xl text-slate-900">¡Pago confirmado!</h2>
+        <p class="mt-2 text-sm text-slate-600">Recibimos tu pago de <strong>$19.900</strong>. Número de orden: <span id="orderId" class="font-mono"></span></p>
+        <p class="mt-1 text-sm text-slate-600">Ahora sigue el proceso para <strong>iniciar la verificación</strong> con los datos de la empleada.</p>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button id="goPostPago" class="px-5 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110">Continuar a datos de la empleada</button>
+        </div>
+        <div class="mt-4 text-xs text-slate-500">
+          URL sugerida para integrar en tu sitio: <code id="nextUrl" class="px-2 py-1 rounded bg-slate-100">(se llena al pagar)</code>
+        </div>
+        <div id="qrWrap" class="mt-6 grid sm:grid-cols-2 gap-6 items-center">
+          <div class="justify-self-center">
+            <img id="qrImg" alt="QR de pago y resumen" class="h-40 w-40 border rounded-xl p-2 bg-white"/>
+          </div>
+          <div class="text-left text-sm">
+            <div class="font-semibold">Resumen del servicio</div>
+            <ul class="mt-1 list-disc pl-5 text-slate-600">
+              <li>Verificación única de background y referencias</li>
+              <li>Actualizaciones por 6 meses</li>
+              <li>Orden: <span id="orderIdTxt" class="font-mono"></span></li>
+            </ul>
+            <p class="mt-2 text-xs text-slate-500">Escanea el QR para ver el comprobante y el detalle del servicio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paso 4: Resumen y envío -->
+    <section id="step-4" class="hidden-el">
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Aside: resumen del comprador y orden -->
+        <aside class="md:col-span-1 rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+          <div class="flex items-center justify-between">
+            <h2 class="font-semibold">Resumen</h2>
+            <span id="paidBadge4" class="hidden inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">✓ Pago validado</span>
+          </div>
+          <div class="mt-4 space-y-3 text-sm" id="asideLead4"></div>
+          <div class="mt-5 space-y-3">
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-xs uppercase tracking-wide text-slate-500">Orden</div>
+              <div class="mt-1 font-mono text-sm" id="orderIdAside4">—</div>
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-xs uppercase tracking-wide text-slate-500">¿Qué hará el agente?</div>
+              <ol class="mt-2 space-y-2 text-sm text-slate-700">
+                <li class="flex gap-2"><span class="h-5 w-5 rounded-full grid place-content-center text-white text-[11px]" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">1</span>Solicita consentimientos por WhatsApp.</li>
+                <li class="flex gap-2"><span class="h-5 w-5 rounded-full grid place-content-center text-white text-[11px]" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">2</span>Pide documentos y referencias con evidencia.</li>
+                <li class="flex gap-2"><span class="h-5 w-5 rounded-full grid place-content-center text-white text-[11px]" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">3</span>Valida contra fuentes públicas.</li>
+                <li class="flex gap-2"><span class="h-5 w-5 rounded-full grid place-content-center text-white text-[11px]" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">4</span>Envía informe y concepto a tu correo.</li>
+              </ol>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Consentimiento digital</span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">Habeas Data</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main: resumen de la empleada + CTA de envío -->
+        <section class="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+          <div class="flex items-start gap-4">
+            <div class="h-12 w-12 rounded-full grid place-content-center text-white text-2xl shrink-0" style="background:linear-gradient(90deg,#7c3aed,#2563eb)">✓</div>
+            <div class="flex-1">
+              <h3 class="text-xl font-extrabold">Revisa y envía para comenzar</h3>
+              <p class="mt-1 text-sm text-slate-600">Verifica los datos de la empleada y envía para que nuestro agente inicie el proceso.</p>
+
+              <div id="subjectSummary" class="mt-4 grid sm:grid-cols-3 gap-4 text-sm">
+                <!-- Se llena por JS con nombre/apellidos/celular -->
+              </div>
+
+              <div class="mt-5 flex flex-wrap gap-3">
+                <a id="startVerification4" href="#" class="px-5 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-600 to-blue-600 hover:brightness-110">Enviar y comenzar verificación</a>
+                <a id="dlReceipt4" href="#" class="px-4 py-2 rounded-xl border">Descargar comprobante</a>
+                <a id="goHome4" href="index.html" class="px-4 py-2 rounded-xl border">Volver al inicio</a>
+              </div>
+
+              <div id="sentNote4" class="hidden mt-3 text-xs text-emerald-700">¡Listo! Enviamos los datos al agente. Te notificaremos al correo cuando el informe esté listo.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ===== Helpers =====
+    const $ = s => document.querySelector(s);
+    const show = el => el && el.classList.remove('hidden-el');
+    const hide = el => el && el.classList.add('hidden-el');
+
+    // ===== State =====
+    let step = 1; const maxStep = 4; const STORAGE = 'vig_checkout_lead_v1';
+    const steps = [$('#step-1'), $('#step-2'), $('#step-3'), $('#step-4')];
+    const nodes = [$('#node-1'), $('#node-2'), $('#node-3'), $('#node-4')];
+    const bar = $('#stepBar');
+    let lockAfterPay = localStorage.getItem('vig_checkout_paid')==='true';
+    const navEls = [$('#nav1'), $('#nav2'), $('#nav3')];
+
+    function applyLockUI(){
+      navEls.forEach(el=>{
+        if(!el) return;
+        if(lockAfterPay){ el.classList.add('locked'); el.setAttribute('aria-disabled','true'); }
+        else { el.classList.remove('locked'); el.removeAttribute('aria-disabled'); }
+      });
+    }
+
+    function paint(){
+      steps.forEach((s,i)=> i===step-1 ? show(s) : hide(s));
+      nodes.forEach((n,i)=>{
+        if(!n) return;
+        n.classList.remove('node-done','node-current','node-upcoming');
+        if(i < step-1){ n.classList.add('node-done'); n.textContent = '✓'; }
+        else if(i === step-1){ n.classList.add('node-current'); n.textContent = String(i+1); }
+        else { n.classList.add('node-upcoming'); n.textContent = String(i+1); }
+      });
+      const pct = ((step-1)/(maxStep-1))*100; if(bar) bar.style.width = pct+'%';
+    }
+
+    function goto(n){
+      n = Math.min(Math.max(1,n), maxStep);
+      if(lockAfterPay && n < step) return; // bloquear retroceso tras pago
+      step = n; paint();
+      if(step === 4) fillStep4();
+    }
+
+    // ===== Paso 1: Lead =====
+    const leadTagsHidden = $('#leadTags');
+    const leadSavedNote = $('#leadSavedNote');
+
+    function saveLead(){
+      const name = $('#leadName')?.value.trim();
+      const mail = $('#leadEmail')?.value.trim();
+      const phone = $('#leadPhone')?.value.trim();
+      if(!name || !mail || !phone){ alert('Completa nombre, correo y celular.'); return false; }
+      const tagsArr = (leadTagsHidden?.value||'').split(',').filter(Boolean);
+      if(tagsArr.length===0){ document.getElementById('chipError')?.classList.remove('hidden'); return false; }
+      const lead = { name, email:mail, phone, tags: tagsArr, ts:Date.now() };
+      localStorage.setItem(STORAGE, JSON.stringify(lead));
+      document.getElementById('chipError')?.classList.add('hidden');
+      leadSavedNote && leadSavedNote.classList.remove('hidden');
+      return true;
+    }
+
+    // Enter en Paso 1
+    $('#leadForm')?.addEventListener('submit', (e)=>{ e.preventDefault(); if(saveLead()) goto(2); });
+
+    // Chips (click + teclado)
+    const chipsBox = $('#leadChips');
+    const chipError = document.getElementById('chipError');
+    if(chipsBox){
+      const updateHidden = ()=>{
+        const tags = Array.from(chipsBox.querySelectorAll('.chip.active')).map(c=>c.textContent.trim());
+        if(leadTagsHidden) leadTagsHidden.value = tags.join(',');
+        if(tags.length>0) chipError?.classList.add('hidden');
+      };
+      const toggleChip = (chip)=>{
+        chip.classList.toggle('active');
+        chip.setAttribute('aria-pressed', chip.classList.contains('active'));
+        updateHidden();
+      };
+      chipsBox.addEventListener('click', (e)=>{
+        const chip = e.target.closest('.chip');
+        if(chip && chipsBox.contains(chip)) toggleChip(chip);
+      });
+      chipsBox.addEventListener('keydown', (e)=>{
+        if((e.key==='Enter' || e.key===' ') && e.target.classList.contains('chip')){
+          e.preventDefault(); toggleChip(e.target);
+        }
+      });
+    }
+
+    $('#goto2')?.addEventListener('click', ()=>{
+      const form = document.getElementById('leadForm');
+      if (form && !form.reportValidity()) { return; }
+      if (saveLead()) goto(2);
+    });
+
+    // ===== Paso 2: Sujeto + pago =====
+    function saveSubject(){
+      const first = document.querySelector('#empFirst4')?.value.trim();
+      const last  = document.querySelector('#empLast4')?.value.trim();
+      const phone = document.querySelector('#empPhone4')?.value.trim();
+      if(!first || !last || !phone){ alert('Completa nombres, apellidos y celular.'); return false; }
+      const subject = { first, last, phone };
+      localStorage.setItem('vig_subject_v1', JSON.stringify(subject));
+      return true;
+    }
+
+    // Términos habilitan el botón de pago
+    const termsEl = document.getElementById('chk-terms');
+    const payNowEl = document.getElementById('payNow');
+    if(termsEl && payNowEl){ payNowEl.disabled = !termsEl.checked; termsEl.addEventListener('change', ()=>{ payNowEl.disabled = !termsEl.checked; }); }
+
+    function doPay(){
+      if(!$('#chk-terms')?.checked){ alert('Debes aceptar Términos y Política de Datos.'); return false; }
+      const gw = document.querySelector('input[name="gateway"]:checked')?.value || 'PayU';
+      alert('Iniciando pago con '+gw+' por $19.900 COP (demo).');
+      const orderId = 'VIG-'+Math.floor(Math.random()*1e6).toString().padStart(6,'0');
+      localStorage.setItem('vig_order_id', orderId);
+      localStorage.setItem('vig_checkout_paid', 'true');
+      lockAfterPay = true; applyLockUI();
+      $('#orderId').textContent = orderId;
+      const next = window.location.origin + window.location.pathname + '?paid=1#postpago';
+      $('#nextUrl').textContent = next;
+      // QR (servicio simple)
+      const qrImg = document.getElementById('qrImg');
+      const orderTxt = document.getElementById('orderIdTxt');
+      if(qrImg){
+        const qrTarget = `https://vigilantia.co/orden/${orderId}`;
+        const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(qrTarget);
+        qrImg.src = qrUrl;
+      }
+      if(orderTxt) orderTxt.textContent = orderId;
+      show($('#payNote'));
+      return true;
+    }
+
+    document.querySelector('#employeeForm4')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!saveSubject()) return;
+      if(!$('#chk-terms')?.checked){ alert('Debes aceptar Términos y Política de Datos.'); return; }
+      if(doPay()) goto(3);
+    });
+
+    document.querySelector('#payNow')?.addEventListener('click', ()=>{
+      const form = document.querySelector('#employeeForm4');
+      if(form && !form.reportValidity()) return;
+      if(!saveSubject()) return;
+      if(!$('#chk-terms')?.checked){ alert('Debes aceptar Términos y Política de Datos.'); return; }
+      if(doPay()) goto(3);
+    });
+
+    // ===== Paso 3 =====
+    $('#goPostPago')?.addEventListener('click', ()=>{ goto(4); });
+
+    // ===== Paso 4: llenar resumen y enviar =====
+    function fillStep4(){
+      const lead = JSON.parse(localStorage.getItem('vig_checkout_lead_v1')||'{}');
+      const orderId = localStorage.getItem('vig_order_id')||'';
+      const paid = localStorage.getItem('vig_checkout_paid')==='true';
+      const subject = JSON.parse(localStorage.getItem('vig_subject_v1')||'{}');
+      if(document.querySelector('#orderIdAside4') && orderId) document.querySelector('#orderIdAside4').textContent = orderId;
+      if(paid) document.querySelector('#paidBadge4')?.classList.remove('hidden');
+      const box = document.querySelector('#asideLead4');
+      if(box){
+        const tags = (lead?.tags||[]).join(', ')||'—';
+        box.innerHTML = `<div><span class="text-slate-500">Comprador:</span> <strong>${lead?.name||'—'}</strong></div>
+          <div><span class="text-slate-500">Correo:</span> <strong>${lead?.email||'—'}</strong></div>
+          <div><span class="text-slate-500">Celular:</span> <strong>${lead?.phone||'—'}</strong></div>
+          <div><span class="text-slate-500">Búsqueda:</span> <strong>${tags}</strong></div>`;
+      }
+      const sum = document.querySelector('#subjectSummary');
+      if(sum){
+        sum.innerHTML = `
+          <div class=\"rounded-xl bg-slate-50 border border-slate-200 p-3\"><div class=\"text-slate-500\">Nombres</div><div class=\"font-semibold\">${subject.first||'—'}</div></div>
+          <div class=\"rounded-xl bg-slate-50 border border-slate-200 p-3\"><div class=\"text-slate-500\">Apellidos</div><div class=\"font-semibold\">${subject.last||'—'}</div></div>
+          <div class=\"rounded-xl bg-slate-50 border border-slate-200 p-3\"><div class=\"text-slate-500\">Celular</div><div class=\"font-semibold\">${subject.phone||'—'}</div></div>`;
+      }
+    }
+
+    document.querySelector('#startVerification4')?.addEventListener('click', async (e)=>{
+      e.preventDefault();
+      const lead = JSON.parse(localStorage.getItem('vig_checkout_lead_v1')||'{}');
+      const subject = JSON.parse(localStorage.getItem('vig_subject_v1')||'{}');
+      if(!subject.first){ alert('Faltan datos de la empleada.'); return; }
+      const payload = { orderId: localStorage.getItem('vig_order_id')||'', paid: localStorage.getItem('vig_checkout_paid')==='true', lead, subject, ts:Date.now() };
+      // Simulación de POST
+      document.querySelector('#sentNote4')?.classList.add('hidden');
+      const btn = document.querySelector('#startVerification4');
+      btn.textContent = 'Enviando…';
+      btn.classList.add('opacity-70','pointer-events-none');
+      await new Promise(r=>setTimeout(r,1200));
+      btn.textContent = 'Enviado ✓';
+      document.querySelector('#sentNote4')?.classList.remove('hidden');
+      console.log('[Vigilantia] payload demo:', payload);
+    });
+
+    // ===== Stepper nav (con validaciones mínimas) =====
+    $('#nav1')?.addEventListener('click', ()=>goto(1));
+    $('#nav2')?.addEventListener('click', ()=>{ if(step===1){ if(saveLead()) goto(2); } else goto(2); });
+    $('#nav3')?.addEventListener('click', ()=>{
+      const hasLead = !!localStorage.getItem('vig_checkout_lead_v1');
+      const hasSubject = !!localStorage.getItem('vig_subject_v1');
+      if(!hasLead){ alert('Completa tu información primero.'); goto(1); return; }
+      if(!hasSubject){ alert('Completa los datos de la empleada.'); goto(2); return; }
+      if(localStorage.getItem('vig_checkout_paid')!=='true'){ if(doPay()) goto(3); return; }
+      goto(3);
+    });
+    $('#nav4')?.addEventListener('click', ()=>{
+      if(!localStorage.getItem('vig_subject_v1')){ alert('Completa los datos de la empleada.'); goto(2); return; }
+      if(localStorage.getItem('vig_checkout_paid')!=='true'){ alert('Completa el pago primero.'); goto(3); return; }
+      goto(4);
+    });
+
+    // ===== Init =====
+    paint();
+    applyLockUI();
+
+    // ===== TESTS =====
+    function T(name, fn){ try{ fn(); console.log('[TEST]', name, 'OK'); } catch(e){ console.warn('[TEST]', name, 'FAIL:', e.message); } }
+    ['node-1','node-2','node-3','node-4','stepBar','step-1','step-2','step-3','step-4','goto2','payNow','goPostPago','sendBtn4','leadForm','employeeForm4','chk-terms','dlReceipt4','startVerification4'].forEach(id=>{
+      const ok = !!document.getElementById(id) || !!document.querySelector('#'+id);
+      console[ok?'log':'warn']('[TEST] presence', id, ok?'OK':'FALTA');
+    });
+    // Chip toggle test (no molesta UX)
+    T('chip toggles hidden input', ()=>{
+      const chip = document.querySelector('#leadChips .chip');
+      const hidden = document.querySelector('#leadTags');
+      if(!chip || !hidden) return; // si no está, omitimos
+      const before = hidden.value; chip.click(); const after = hidden.value; if(before === after) throw new Error('hidden no cambia'); chip.click();
+    });
+    // Lock test: no permite volver atrás tras pagar
+    T('lock prevents back after pay', ()=>{
+      const prevLock = lockAfterPay; const prevStep = step;
+      lockAfterPay = true; applyLockUI(); step = 3; paint();
+      const before = !document.querySelector('#step-3').classList.contains('hidden-el');
+      goto(2); const still = !document.querySelector('#step-3').classList.contains('hidden-el');
+      if(!before || !still) throw new Error('retrocedió con lock activo');
+      // restaurar
+      lockAfterPay = prevLock; applyLockUI(); step = prevStep; paint();
+    });
+    // Initial state test (cuando no hay pago debe iniciar en paso 1)
+    T('initial step is 1 when unpaid', ()=>{ if(!lockAfterPay){ const visible1 = !document.querySelector('#step-1').classList.contains('hidden-el'); if(!visible1) throw new Error('no inicia en paso 1'); } });
+    // Paso 1 avanzar test (no rompe estado)
+    T('continue to step 2 when lead valid', ()=>{
+      const prevLead = localStorage.getItem('vig_checkout_lead_v1'); const prevStep = step;
+      const nameEl = document.querySelector('#leadName'); const emailEl = document.querySelector('#leadEmail'); const phoneEl = document.querySelector('#leadPhone');
+      const prevVals = {n:nameEl.value, e:emailEl.value, p:phoneEl.value, chips:Array.from(document.querySelectorAll('#leadChips .chip.active')).map(c=>c.textContent), tags: document.querySelector('#leadTags').value };
+      const firstChip = document.querySelector('#leadChips .chip'); if(firstChip){ firstChip.click(); }
+      nameEl.value = 'Test User'; emailEl.value = 'test@demo.co'; phoneEl.value = '+573000000000';
+      document.getElementById('goto2').click(); const at2 = !document.querySelector('#step-2').classList.contains('hidden-el'); if(!at2) throw new Error('no avanzó al paso 2');
+      if(prevLead===null) localStorage.removeItem('vig_checkout_lead_v1'); else localStorage.setItem('vig_checkout_lead_v1', prevLead);
+      nameEl.value = prevVals.n; emailEl.value = prevVals.e; phoneEl.value = prevVals.p;
+      document.querySelectorAll('#leadChips .chip.active').forEach(c=>c.classList.remove('active'));
+      document.querySelectorAll('#leadChips .chip').forEach(c=>{ c.setAttribute('aria-pressed','false'); });
+      document.querySelector('#leadTags').value = prevVals.tags || '';
+      if(prevVals.chips && prevVals.chips.length){ prevVals.chips.forEach(txt=>{ const chip = Array.from(document.querySelectorAll('#leadChips .chip')).find(c=>c.textContent.trim()===txt); if(chip){ chip.classList.add('active'); chip.setAttribute('aria-pressed','true'); } }); }
+      document.getElementById('leadSavedNote')?.classList.add('hidden'); step = prevStep; paint();
+    });
+  });
+  </script>
+</body>
+</html>
