@@ -95,7 +95,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800">
   <!-- Sticky CTA (mobile) -->
-  <div id="stickyBar" class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-t border-slate-200">
+   <div id="stickyBar" class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-t border-slate-200 translate-y-full transition-transform">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
       <div class="text-sm">
         <div class="font-semibold">Consulta única</div>
@@ -152,7 +152,7 @@
   </header>
 
   <!-- Hero -->
-  <section class="relative overflow-hidden">
+  <section id="hero" class="relative overflow-hidden">
     <div class="absolute inset-0 -z-10 bg-gradient-to-br from-violet-50 via-white to-blue-50"></div>
     <div class="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-violet-400/20 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl"></div>
@@ -804,5 +804,23 @@
       menuBtn.setAttribute('aria-expanded', String(!expanded));
       mobileMenu.classList.toggle('hidden');
     });
+  }
+</script>
+
+    
+<script>
+  const hero = document.getElementById('hero');
+  const stickyBar = document.getElementById('stickyBar');
+  if (hero && stickyBar) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stickyBar.classList.add('translate-y-full');
+        } else {
+          stickyBar.classList.remove('translate-y-full');
+        }
+      });
+    });
+    observer.observe(hero);
   }
 </script>
