@@ -307,10 +307,11 @@
     // ===== Paso 2: Sujeto + pago =====
     function saveSubject(){
       const first = document.querySelector('#empFirst4')?.value.trim();
+      const lastName = document.querySelector('#empLast4')?.value?.trim() || '';
       const phoneRaw = document.querySelector('#empPhone4')?.value.trim();
       const phone = phoneRaw.replace(/\D/g, '');
-      if(!first || !last || phone.length !== 10){ alert('Completa nombres, apellidos y un celular de 10 dígitos.'); return false; }
-      const subject = { first, last, phone };
+      if(!first || !lastName || phone.length !== 10){ alert('Completa nombres, apellidos y un celular de 10 dígitos.'); return false; }
+      const subject = { first, last: lastName, phone };
       localStorage.setItem('vig_subject_v1', JSON.stringify(subject));
       return true;
     }
