@@ -141,9 +141,13 @@
             >Cédula *
             <input
               id="cedula"
-              type="text"
+              type="number"
+              inputmode="numeric"
+              pattern="\\d+"
+              min="0"
+              step="1"
               required
-              class="mt-1 w-full rounded-md border p-2"
+              class="mt-1 w-full rounded-md border p-2 appearance-none"
             />
           </label>
           <label class="text-sm"
@@ -673,9 +677,9 @@
             nombres: document.getElementById("nombres").value.trim(),␊
             apellidos: document.getElementById("apellidos").value.trim(),␊
             cedulaHash: await hashCedula(␊
-              document.getElementById("cedula").value.trim(),␊
+              document.getElementById("cedula").value,
             ),␊
-            telefono: tel,
+            telefono: document.getElementById("telefono").value.trim(),␊
             email: document.getElementById("email").value.trim(),␊
             fotoRostro: await fileTo64(foto),␊
           },␊
@@ -762,4 +766,5 @@
     </script>
   </body>
 </html>
+
 
