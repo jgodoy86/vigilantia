@@ -152,6 +152,10 @@
               id="telefono"
               type="tel"
               required
+              inputmode="numeric"
+              pattern="\d{10}"
+              maxlength="10"
+              title="Ingresa un número de 10 dígitos"
               class="mt-1 w-full rounded-md border p-2"
             />
           </label>
@@ -589,20 +593,25 @@
         });
       }
 
-      document.getElementById("go2").addEventListener("click", () => {
-        const form = document.getElementById("form1");
-        if (form.checkValidity()) {
-          goto(2);
-        } else {
+     document.getElementById("go2").addEventListener("click", () => {␊
+        const form = document.getElementById("form1");␊
+        if (!form.checkValidity()) {
           form.reportValidity();
+          return;
         }
-      });
+        goto(2);
+      });␊
       document.getElementById("back1").addEventListener("click", () => goto(1));
 
       document.getElementById("go3").addEventListener("click", async () => {
-        const t = tipo.value;
+      const t = tipo.value;
         if (!t) {
           alert("Selecciona el tipo de reporte.");
+          return;
+        }
+        const tel = document.getElementById("telefono").value.trim();
+        if (!/^\d{10}$/.test(tel)) {
+          alert("El número de teléfono debe tener exactamente 10 dígitos.");
           return;
         }
         // Validar campos según bloque
@@ -654,25 +663,25 @@
           alert("Completa los campos requeridos.");
           return;
         }
-
-        const foto = document.getElementById("fotoRostro").files[0];
-        const base = {
-          idReporte: crypto.randomUUID(),
-          fechaHora: new Date().toISOString(),
-          tipo: t,
-          datosEmpleada: {
-            nombres: document.getElementById("nombres").value.trim(),
-            apellidos: document.getElementById("apellidos").value.trim(),
-            cedulaHash: await hashCedula(
-              document.getElementById("cedula").value.trim(),
-            ),
-            telefono: document.getElementById("telefono").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            fotoRostro: await fileTo64(foto),
-          },
-          detalles: {},
-          evidencias: [],
-        };
+        
+      const foto = document.getElementById("fotoRostro").files[0];␊
+        const base = {␊
+          idReporte: crypto.randomUUID(),␊
+          fechaHora: new Date().toISOString(),␊
+          tipo: t,␊
+          datosEmpleada: {␊
+            nombres: document.getElementById("nombres").value.trim(),␊
+            apellidos: document.getElementById("apellidos").value.trim(),␊
+            cedulaHash: await hashCedula(␊
+              document.getElementById("cedula").value.trim(),␊
+            ),␊
+            telefono: tel,
+            email: document.getElementById("email").value.trim(),␊
+            fotoRostro: await fileTo64(foto),␊
+          },␊
+          detalles: {},␊
+          evidencias: [],␊
+        };␊
 
         if (t === "INGRESO") {
           base.detalles = {
@@ -753,3 +762,4 @@
     </script>
   </body>
 </html>
+
