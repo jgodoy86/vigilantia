@@ -613,14 +613,14 @@
 
       function diasSeleccionados() {
         return Array.from(document.querySelectorAll(".dias:checked")).map(
-          (c) => c.value,
+          (c) => c.value
         );
       }
 
       async function hashCedula(v) {
         const h = await crypto.subtle.digest(
           "SHA-256",
-          new TextEncoder().encode(v),
+          new TextEncoder().encode(v)
         );
         return Array.from(new Uint8Array(h))
           .map((b) => b.toString(16).padStart(2, "0"))
@@ -715,7 +715,7 @@
             nombres: document.getElementById("nombres").value.trim(),␊
             apellidos: document.getElementById("apellidos").value.trim(),␊
             cedulaHash: await hashCedula(␊
-              document.getElementById("cedula").value,
+              document.getElementById("cedula").value
             ),␊
             telefono: document.getElementById("telefono").value.trim(),␊
             email: document.getElementById("email").value.trim(),␊
@@ -756,7 +756,7 @@
               .value.trim(),
           };
           const files = Array.from(
-            document.getElementById("inc_evidencias").files,
+            document.getElementById("inc_evidencias").files
           ).slice(0, 10);
           for (const f of files) {
             base.evidencias.push({
@@ -785,7 +785,7 @@
         document.getElementById("preview").textContent = JSON.stringify(
           base,
           null,
-          2,
+          2
         );
         goto(3);
       });
@@ -795,7 +795,7 @@
         alert("Reporte listo para enviar (ver consola)");
         console.log(
           "Payload JSON:",
-          document.getElementById("preview").textContent,
+          document.getElementById("preview").textContent
         );
         // fetch('/api/reportes',{method:'POST',body:document.getElementById("preview").textContent});
         goto(4);
@@ -812,6 +812,7 @@
     </script>
   </body>
 </html>
+
 
 
 
