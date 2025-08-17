@@ -87,7 +87,7 @@
     </header>
 
     <!-- Stepper -->
-    <section class="bg-white border-b">
+    <section id="stepper" class="bg-white border-b">
       <div class="max-w-3xl mx-auto px-4 py-5">
         <ol class="flex items-start justify-between text-xs sm:text-sm">
           <li id="nav1" class="step">
@@ -101,6 +101,10 @@
           <li id="nav3" class="step">
             <span id="node3" class="node node-upcoming">3</span
             ><span>Vista previa</span>
+          </li>
+          <li id="nav4" class="step">
+            <span id="node4" class="node node-upcoming">4</span
+            ><span>Confirmación</span>
           </li>
         </ol>
         <div
@@ -517,11 +521,26 @@
           </button>
         </div>
       </section>
-    </main>
 
+      <!-- Paso 4 -->
+      <section id="step4" class="hidden-el space-y-4 text-center">
+        <p class="text-lg font-semibold">¡Gracias por tu reporte!</p>
+        <p>
+          Tu información nos ayuda a mejorar las condiciones laborales de las
+          trabajadoras del hogar.
+        </p>
+        <button
+          id="close"
+          type="button"
+          class="px-4 py-2 rounded-md text-white bg-primary-600 hover:bg-primary-700"
+        >
+          Cerrar
+        </button>
+      </section>
+    </main>
     <script>
       let step = 1;
-      const goto = (s) => {
+     const goto = (s) => {
         step = s;
         document
           .getElementById("step1")
@@ -532,6 +551,9 @@
         document
           .getElementById("step3")
           .classList.toggle("hidden-el", step !== 3);
+        document
+          .getElementById("step4")
+          .classList.toggle("hidden-el", step !== 4);
         document.getElementById("node1").className =
           "node " +
           (step > 1
@@ -547,9 +569,25 @@
               ? "node-current"
               : "node-upcoming");
         document.getElementById("node3").className =
-          "node " + (step === 3 ? "node-current" : "node-upcoming");
+          "node " +
+          (step > 3
+            ? "node-done"
+            : step === 3
+              ? "node-current"
+              : "node-upcoming");
+        document.getElementById("node4").className =
+          "node " + (step === 4 ? "node-current" : "node-upcoming");
         document.getElementById("bar").style.width =
-          step === 1 ? "0%" : step === 2 ? "50%" : "100%";
+          step === 1
+            ? "0%"
+            : step === 2
+              ? "33%"
+              : step === 3
+                ? "66%"
+                : "100%";
+        document
+          .getElementById("stepper")
+          .classList.toggle("hidden", step === 4);
       };
 
       // Mostrar bloque según tipo
@@ -760,11 +798,20 @@
           document.getElementById("preview").textContent,
         );
         // fetch('/api/reportes',{method:'POST',body:document.getElementById("preview").textContent});
+        goto(4);
+        document.getElementById("back1").remove();
+        document.getElementById("back2").remove();
+      });
+
+      document.getElementById("close").addEventListener("click", () => {
+        window.location.href = "index.html";
+        window.close();
       });
 
       goto(1);
     </script>
   </body>
 </html>
+
 
 
