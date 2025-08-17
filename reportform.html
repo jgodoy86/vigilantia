@@ -649,11 +649,25 @@
         );
       }
       async function hashCedula(v) {
-        if (gcrypto && gcrypto.subtle && gcrypto.subtle.digest) {
+        if (
+          gcrypto &&
+          gcrypto.subtle &&
+          gcrypto.subtle.digest &&
+          typeof TextEncoder !== "undefined"
+        ) {
           const h = await gcrypto.subtle.digest(
             "SHA-256",
             new TextEncoder().encode(v)
           );
+          return Array.from(new Uint8Array(h))
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("");
+        } else if (gcrypto && gcrypto.subtle && gcrypto.subtle.digest) {
+          const bytes = new Uint8Array(v.length);
+          for (let i = 0; i < v.length; i++) {
+            bytes[i] = v.charCodeAt(i);
+          }
+          const h = await gcrypto.subtle.digest("SHA-256", bytes);
           return Array.from(new Uint8Array(h))
             .map((b) => b.toString(16).padStart(2, "0"))
             .join("");
@@ -852,6 +866,7 @@
     </script>
   </body>
 </html>
+
 
 
 
