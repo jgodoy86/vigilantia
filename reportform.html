@@ -540,8 +540,11 @@
     </main>
     <script>
       let step = 1;
-      const gcrypto = globalThis.crypto;
-     const goto = (s) => {
+      const gcrypto =
+          (typeof window !== "undefined" && window.crypto) ||
+          (typeof self !== "undefined" && self.crypto) ||
+          null;
+        const goto = (s) => {
         step = s;
         document
           .getElementById("step1")
@@ -619,11 +622,11 @@
       }
 
       function generateUUID() {
-        if (gcrypto?.randomUUID) {
+        if (gcrypto && gcrypto.randomUUID) {
           return gcrypto.randomUUID();
         }
         const bytes = new Uint8Array(16);
-        if (gcrypto?.getRandomValues) {
+        if (gcrypto && gcrypto.getRandomValues) {
           gcrypto.getRandomValues(bytes);
         } else {
           for (let i = 0; i < bytes.length; i++) {
@@ -645,14 +648,14 @@
           hex.slice(10).join("")
         );
       }
-      async function hashCedula(v) {␊
-        if (gcrypto?.subtle?.digest) {
+      async function hashCedula(v) {
+        if (gcrypto && gcrypto.subtle && gcrypto.subtle.digest) {
           const h = await gcrypto.subtle.digest(
-            "SHA-256",␊
-            new TextEncoder().encode(v)␊
-          );␊
-          return Array.from(new Uint8Array(h))␊
-            .map((b) => b.toString(16).padStart(2, "0"))␊
+            "SHA-256",
+            new TextEncoder().encode(v)
+          );
+          return Array.from(new Uint8Array(h))
+            .map((b) => b.toString(16).padStart(2, "0"))
             .join("");
         }
         let hash = 0;
@@ -849,6 +852,7 @@
     </script>
   </body>
 </html>
+
 
 
 
