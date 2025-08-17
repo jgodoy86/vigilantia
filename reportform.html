@@ -617,14 +617,42 @@
         );
       }
 
-      async function hashCedula(v) {
-        const h = await crypto.subtle.digest(
-          "SHA-256",
-          new TextEncoder().encode(v)
+      function generateUUID() {
+        if (crypto?.randomUUID) {
+          return crypto.randomUUID();
+        }
+        const bytes = crypto.getRandomValues(new Uint8Array(16));
+        bytes[6] = (bytes[6] & 0x0f) | 0x40;
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+        const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0"));
+        return (
+          hex.slice(0, 4).join("") +
+          "-" +
+          hex.slice(4, 6).join("") +
+          "-" +
+          hex.slice(6, 8).join("") +
+          "-" +
+          hex.slice(8, 10).join("") +
+          "-" +
+          hex.slice(10).join("")
         );
-        return Array.from(new Uint8Array(h))
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("");
+      }
+      async function hashCedula(v) {
+        if (crypto?.subtle?.digest) {
+          const h = await crypto.subtle.digest(
+            "SHA-256",
+            new TextEncoder().encode(v)
+          );
+          return Array.from(new Uint8Array(h))
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("");
+        }
+        let hash = 0;
+        for (let i = 0; i < v.length; i++) {
+          hash = (hash << 5) - hash + v.charCodeAt(i);
+          hash |= 0;
+        }
+        return hash.toString(16);
       }
       function fileTo64(f) {
         return new Promise((res, rej) => {
@@ -708,7 +736,7 @@
         
       const foto = document.getElementById("fotoRostro").files[0];
         const base = {
-          idReporte: crypto.randomUUID(),
+          idReporte: generateUUID(),
           fechaHora: new Date().toISOString(),
           tipo: t,
           datosEmpleada: {
@@ -812,6 +840,7 @@
     </script>
   </body>
 </html>
+
 
 
 
