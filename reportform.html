@@ -12,22 +12,22 @@
         theme: {
           extend: {
             colors: {
-              primary: {
-                50: "#f3f1ff",
-                100: "#e9e4ff",
-                200: "#cabdff",
-                300: "#a892ff",
-                400: "#8a6eff",
-                500: "#6f4bff",
-                600: "#5b3de6",
-                700: "#4a32bf",
-                800: "#3b2999",
-                900: "#2f217a",
-              },
-            },
-          },
-        },
-      };
+                primary: {
+                  50: "#f3f1ff",
+                  100: "#e9e4ff",
+                  200: "#cabdff",
+                  300: "#a892ff",
+                  400: "#8a6eff",
+                  500: "#6f4bff",
+                  600: "#5b3de6",
+                  700: "#4a32bf",
+                  800: "#3b2999",
+                  900: "#2f217a"
+                }
+              }
+            }
+          }
+        };
     </script>
 
     <style>
@@ -597,8 +597,8 @@
         SALIDA: document.getElementById("bloqueSalida"),
         INCIDENTE: document.getElementById("bloqueIncidente"),
         NOVEDAD: document.getElementById("bloqueNovedad"),
-        PROCESO: document.getElementById("bloqueProceso"),
-      };
+        PROCESO: document.getElementById("bloqueProceso")
+        };
       tipo.addEventListener("change", () => {
         Object.values(bloques).forEach((b) => b.classList.add("hidden"));
         if (bloques[tipo.value]) bloques[tipo.value].classList.remove("hidden");
@@ -727,22 +727,22 @@
 
         if (t === "INGRESO") {
           base.detalles = {
-            modalidad: document.getElementById("ing_modalidad").value,
-            dias: diasSeleccionados(),
-            salario: document.getElementById("ing_salario").value,
-            moneda: document.getElementById("ing_moneda").value,
-            periodicidad: document.getElementById("ing_periodicidad").value,
-            eps: document.getElementById("ing_eps").value,
-            arl: document.getElementById("ing_arl").value,
-            inicio: document.getElementById("ing_inicio").value,
-          };
+              modalidad: document.getElementById("ing_modalidad").value,
+              dias: diasSeleccionados(),
+              salario: document.getElementById("ing_salario").value,
+              moneda: document.getElementById("ing_moneda").value,
+              periodicidad: document.getElementById("ing_periodicidad").value,
+              eps: document.getElementById("ing_eps").value,
+              arl: document.getElementById("ing_arl").value,
+              inicio: document.getElementById("ing_inicio").value
+            };
         }
         if (t === "SALIDA") {
           base.detalles = {
-            fecha: document.getElementById("sal_fecha").value,
-            motivo: document.getElementById("sal_motivo").value,
-            recontratable: document.getElementById("sal_recontratable").value,
-          };
+              fecha: document.getElementById("sal_fecha").value,
+              motivo: document.getElementById("sal_motivo").value,
+              recontratable: document.getElementById("sal_recontratable").value
+            };
         }
         if (t === "INCIDENTE") {
           base.detalles = {
@@ -751,35 +751,35 @@
             denuncia: document.getElementById("inc_denuncia").value,
             entidad: document.getElementById("inc_entidad").value,
             radicado: document.getElementById("inc_radicado").value,
-            descripcion: document
-              .getElementById("inc_descripcion")
-              .value.trim(),
-          };
+              descripcion: document
+                .getElementById("inc_descripcion")
+                .value.trim()
+            };
           const files = Array.from(
             document.getElementById("inc_evidencias").files
           ).slice(0, 10);
           for (const f of files) {
             base.evidencias.push({
-              nombre: f.name,
-              tipo: f.type,
-              contenido: await fileTo64(f),
-            });
+                nombre: f.name,
+                tipo: f.type,
+                contenido: await fileTo64(f)
+              });
           }
         }
         if (t === "NOVEDAD") {
           base.detalles = {
             tipo: document.getElementById("nov_tipo").value,
-            descripcion: document
-              .getElementById("nov_descripcion")
-              .value.trim(),
-          };
+              descripcion: document
+                .getElementById("nov_descripcion")
+                .value.trim()
+            };
         }
         if (t === "PROCESO") {
           base.detalles = {
             tipoProceso: document.getElementById("pro_tipo").value,
             fuente: document.getElementById("pro_fuente").value,
-            proximaFecha: document.getElementById("pro_fecha").value,
-          };
+            proximaFecha: document.getElementById("pro_fecha").value
+            };
         }
 
         document.getElementById("preview").textContent = JSON.stringify(
@@ -812,6 +812,7 @@
     </script>
   </body>
 </html>
+
 
 
 
