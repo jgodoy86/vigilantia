@@ -66,7 +66,7 @@
             <input id="leadEmail" type="email" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="tucorreo@email.com" />
           </label>
           <label class="text-sm sm:col-span-2">Celular (WhatsApp)
-            <input id="leadPhone" type="tel" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="+57 300 000 0000" />
+             <input id="leadPhone" type="tel" required inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="3001234567" />
           </label>
           <div class="sm:col-span-2">
             <div class="text-sm font-medium">¿Qué tipo de empleada estás buscando?</div>
@@ -107,7 +107,7 @@
             <input id="empLast4" type="text" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="Ej. Pérez López" />
           </label>
           <label class="text-sm sm:col-span-2">Celular de la empleada (WhatsApp)
-            <input id="empPhone4" type="tel" required class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="+57 300 000 0000" />
+            <input id="empPhone4" type="tel" required inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="3001234567" />
           </label>
 
           <div class="sm:col-span-2 mt-2 flex items-center gap-2 text-xs text-slate-600">
@@ -258,8 +258,9 @@
     function saveLead(){
       const name = $('#leadName')?.value.trim();
       const mail = $('#leadEmail')?.value.trim();
-      const phone = $('#leadPhone')?.value.trim();
-      if(!name || !mail || !phone){ alert('Completa nombre, correo y celular.'); return false; }
+      const phoneRaw = $('#leadPhone')?.value.trim();
+      const phone = phoneRaw.replace(/\D/g, '');
+      if(!name || !mail || phone.length !== 10){ alert('Completa nombre, correo y un celular de 10 dígitos.'); return false; }
       const tagsArr = (leadTagsHidden?.value||'').split(',').filter(Boolean);
       if(tagsArr.length===0){ document.getElementById('chipError')?.classList.remove('hidden'); return false; }
       const lead = { name, email:mail, phone, tags: tagsArr, ts:Date.now() };
@@ -306,9 +307,9 @@
     // ===== Paso 2: Sujeto + pago =====
     function saveSubject(){
       const first = document.querySelector('#empFirst4')?.value.trim();
-      const last  = document.querySelector('#empLast4')?.value.trim();
-      const phone = document.querySelector('#empPhone4')?.value.trim();
-      if(!first || !last || !phone){ alert('Completa nombres, apellidos y celular.'); return false; }
+      const phoneRaw = document.querySelector('#empPhone4')?.value.trim();
+      const phone = phoneRaw.replace(/\D/g, '');
+      if(!first || !last || phone.length !== 10){ alert('Completa nombres, apellidos y un celular de 10 dígitos.'); return false; }
       const subject = { first, last, phone };
       localStorage.setItem('vig_subject_v1', JSON.stringify(subject));
       return true;
@@ -455,7 +456,7 @@
       const nameEl = document.querySelector('#leadName'); const emailEl = document.querySelector('#leadEmail'); const phoneEl = document.querySelector('#leadPhone');
       const prevVals = {n:nameEl.value, e:emailEl.value, p:phoneEl.value, chips:Array.from(document.querySelectorAll('#leadChips .chip.active')).map(c=>c.textContent), tags: document.querySelector('#leadTags').value };
       const firstChip = document.querySelector('#leadChips .chip'); if(firstChip){ firstChip.click(); }
-      nameEl.value = 'Test User'; emailEl.value = 'test@demo.co'; phoneEl.value = '+573000000000';
+      nameEl.value = 'Test User'; emailEl.value = 'test@demo.co'; phoneEl.value = '3000000000';
       document.getElementById('goto2').click(); const at2 = !document.querySelector('#step-2').classList.contains('hidden-el'); if(!at2) throw new Error('no avanzó al paso 2');
       if(prevLead===null) localStorage.removeItem('vig_checkout_lead_v1'); else localStorage.setItem('vig_checkout_lead_v1', prevLead);
       nameEl.value = prevVals.n; emailEl.value = prevVals.e; phoneEl.value = prevVals.p;
