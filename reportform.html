@@ -1,17 +1,18 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reportar información – Vigilantia</title>
 
-  <!-- Tailwind (mismo patrón de diseño) -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: {
+            primary:{
               50:'#f3f1ff',100:'#e9e4ff',200:'#cabdff',300:'#a892ff',
               400:'#8a6eff',500:'#6f4bff',600:'#5b3de6',700:'#4a32bf',
               800:'#3b2999',900:'#2f217a'
@@ -21,419 +22,400 @@
       }
     }
   </script>
+
+  <style>
+    .hidden-el{display:none}
+    .step{display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none}
+    .node{height:2rem;width:2rem;border-radius:9999px;display:grid;place-content:center;font-weight:700}
+    .node-done{background:linear-gradient(90deg,#6f4bff,#2563eb);color:#fff}
+    .node-current{background:#fff;border:2px solid #6f4bff;color:#6f4bff;box-shadow:0 4px 14px rgba(111,75,255,.2)}
+    .node-upcoming{background:#e5e7eb;color:#374151}
+  </style>
 </head>
+
 <body class="bg-slate-50 text-slate-800">
-  <main class="max-w-4xl mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Reportar información de empleada doméstica</h1>
+<header class="bg-white border-b">
+  <div class="max-w-3xl mx-auto px-4 py-3">
+    <h1 class="text-xl font-bold">Reportar información</h1>
+  </div>
+</header>
 
-    <form id="reporteForm" class="space-y-6">
-      <!-- Bloque fijo -->
-      <section class="grid md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium">Nombres *</label>
-          <input id="nombres" type="text" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Apellidos *</label>
-          <input id="apellidos" type="text" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Número de cédula *</label>
-          <input id="cedula" type="text" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Teléfono *</label>
-          <input id="telefono" type="tel" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Email *</label>
-          <input id="email" type="email" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Tipo de reporte *</label>
-          <select id="tipoReporte" class="mt-1 w-full rounded-md border p-2" required>
-            <option value="">Seleccione</option>
-            <option value="INGRESO">INGRESO</option>
-            <option value="SALIDA">SALIDA</option>
-            <option value="INCIDENTE">INCIDENTE</option>
-            <option value="NOVEDAD">NOVEDAD</option>
-            <option value="PROCESO">PROCESO</option>
-          </select>
-        </div>
-        <div class="md:col-span-2">
-          <label class="block text-sm font-medium">Foto de rostro *</label>
-          <input id="fotoRostro" type="file" accept="image/*" class="mt-1 w-full rounded-md border p-2" required>
-        </div>
-        <div class="md:col-span-2 flex items-center gap-2">
-          <input id="consentimiento" type="checkbox" class="rounded border" required>
-          <label for="consentimiento" class="text-sm">
-            Acepto los <a href="#" class="text-primary-600 underline">Términos &amp; Condiciones</a> y la
-            <a href="#" class="text-primary-600 underline">Política de Tratamiento de Datos</a>.
-          </label>
-        </div>
-      </section>
+<!-- Stepper -->
+<section class="bg-white border-b">
+  <div class="max-w-3xl mx-auto px-4 py-5">
+    <ol class="flex items-start justify-between text-xs sm:text-sm">
+      <li id="nav1" class="step"><span id="node1" class="node node-current">1</span><span>Datos básicos</span></li>
+      <li id="nav2" class="step"><span id="node2" class="node node-upcoming">2</span><span>Detalles</span></li>
+      <li id="nav3" class="step"><span id="node3" class="node node-upcoming">3</span><span>Vista previa</span></li>
+    </ol>
+    <div class="relative mt-3 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+      <div id="bar" class="h-full bg-gradient-to-r from-primary-600 to-blue-600 transition-all duration-300" style="width:0%"></div>
+    </div>
+  </div>
+</section>
 
-      <!-- INGRESO -->
-      <section id="bloqueIngreso" class="hidden space-y-4 bg-white p-4 rounded-md shadow">
-        <h2 class="font-semibold">Datos de ingreso</h2>
-        <div>
-          <label class="block text-sm font-medium">Modalidad *</label>
-          <select id="ing_modalidad" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Interna</option>
-            <option>Por días</option>
-            <option>Tiempo completo</option>
-            <option>Parcial</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Días de la semana *</label>
-          <div class="mt-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
-            <label class="flex items-center gap-2"><input type="checkbox" value="Lunes" class="diasSemana">Lun</label>
-            <label class="flex items-center gap-2"><input type="checkbox" value="Martes" class="diasSemana">Mar</label>
-            <label class="flex items-center gap-2"><input type="checkbox" value="Miércoles" class="diasSemana">Mié</label>
-            <label class="flex items-center gap-2"><input type="checkbox" value="Jueves" class="diasSemana">Jue</label>
-            <label class="flex items-center gap-2"><input type="checkbox" value="Viernes" class="diasSemana">Vie</label>
-            <label class="flex items-center gap-2"><input type="checkbox" value="Sábado" class="diasSemana">Sáb</label>
-          </div>
-        </div>
-        <div class="grid sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-sm font-medium">Salario *</label>
-            <input id="ing_salario" type="number" class="mt-1 w-full rounded-md border p-2">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Moneda *</label>
-            <select id="ing_moneda" class="mt-1 w-full rounded-md border p-2">
-              <option>COP</option><option>USD</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Periodicidad *</label>
-            <select id="ing_periodicidad" class="mt-1 w-full rounded-md border p-2">
-              <option>Mensual</option><option>Quincenal</option><option>Semanal</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium">EPS *</label>
-            <input id="ing_eps" type="text" class="mt-1 w-full rounded-md border p-2">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">ARL *</label>
-            <input id="ing_arl" type="text" class="mt-1 w-full rounded-md border p-2">
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Fecha de inicio *</label>
-          <input id="ing_inicio" type="date" class="mt-1 w-full rounded-md border p-2">
-        </div>
-      </section>
-
-      <!-- SALIDA -->
-      <section id="bloqueSalida" class="hidden space-y-4 bg-white p-4 rounded-md shadow">
-        <h2 class="font-semibold">Datos de salida</h2>
-        <div>
-          <label class="block text-sm font-medium">Fecha de salida *</label>
-          <input id="sal_fecha" type="date" class="mt-1 w-full rounded-md border p-2">
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Motivo *</label>
-          <select id="sal_motivo" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Renuncia</option>
-            <option>Mutuo acuerdo</option>
-            <option>Justa causa</option>
-            <option>Sin justa causa</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Recontratable *</label>
-          <select id="sal_recontratable" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Sí</option><option>No</option>
-          </select>
-        </div>
-      </section>
-
-      <!-- INCIDENTE -->
-      <section id="bloqueIncidente" class="hidden space-y-4 bg-white p-4 rounded-md shadow">
-        <h2 class="font-semibold">Detalles del incidente</h2>
-        <div>
-          <label class="block text-sm font-medium">Clasificación *</label>
-          <select id="inc_clasificacion" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Robo</option><option>Maltrato</option><option>Incumplimiento</option>
-            <option>Negligencia</option><option>Otro</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Nivel de severidad *</label>
-          <select id="inc_severidad" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Bajo</option><option>Medio</option><option>Alto</option><option>Crítico</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Denuncia formal *</label>
-          <select id="inc_denuncia" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>NO</option><option>SÍ</option>
-          </select>
-        </div>
-        <div id="inc_detalle_denuncia" class="hidden grid sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium">Entidad</label>
-            <input id="inc_entidad" type="text" class="mt-1 w-full rounded-md border p-2">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Radicado</label>
-            <input id="inc_radicado" type="text" class="mt-1 w-full rounded-md border p-2">
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Descripción *</label>
-          <textarea id="inc_descripcion" class="mt-1 w-full rounded-md border p-2" rows="4"></textarea>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Evidencias (máx 10)</label>
-          <input id="inc_evidencias" type="file" multiple class="mt-1 w-full rounded-md border p-2">
-        </div>
-      </section>
-
-      <!-- NOVEDAD -->
-      <section id="bloqueNovedad" class="hidden space-y-4 bg-white p-4 rounded-md shadow">
-        <h2 class="font-semibold">Novedad</h2>
-        <div>
-          <label class="block text-sm font-medium">Tipo *</label>
-          <select id="nov_tipo" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Cambio de horario</option>
-            <option>Llamado de atención</option>
-            <option>Capacitación</option>
-            <option>Otra</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Descripción *</label>
-          <textarea id="nov_descripcion" rows="3" class="mt-1 w-full rounded-md border p-2"></textarea>
-        </div>
-      </section>
-
-      <!-- PROCESO -->
-      <section id="bloqueProceso" class="hidden space-y-4 bg-white p-4 rounded-md shadow">
-        <h2 class="font-semibold">Proceso de selección</h2>
-        <div>
-          <label class="block text-sm font-medium">Tipo de proceso *</label>
-          <select id="pro_tipo" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Postulada</option>
-            <option>Entrevista</option>
-            <option>Prueba</option>
-            <option>Oferta en firma</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Fuente *</label>
-          <select id="pro_fuente" class="mt-1 w-full rounded-md border p-2">
-            <option value="">Seleccione</option>
-            <option>Hogar</option>
-            <option>Agencia</option>
-            <option>Plataforma</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Fecha próximo paso *</label>
-          <input id="pro_fecha" type="date" class="mt-1 w-full rounded-md border p-2">
-        </div>
-      </section>
-
-      <!-- Botones -->
-      <div class="flex flex-wrap gap-4 pt-4">
-        <button type="button" id="btnPreview"
-          class="px-4 py-2 rounded-md bg-white border border-primary-500 text-primary-700 hover:bg-primary-50">
-          Vista previa
-        </button>
-        <button type="submit"
-          class="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700">
-          Guardar / Enviar
-        </button>
-        <button type="reset"
-          class="px-4 py-2 rounded-md bg-slate-200 text-slate-700 hover:bg-slate-300">
-          Limpiar formulario
-        </button>
+<main class="max-w-3xl mx-auto px-4 py-6 space-y-8">
+  <!-- Paso 1 -->
+  <section id="step1" class="space-y-4">
+    <form id="form1" class="grid sm:grid-cols-2 gap-4">
+      <label class="text-sm">Nombres *
+        <input id="nombres" type="text" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm">Apellidos *
+        <input id="apellidos" type="text" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm">Cédula *
+        <input id="cedula" type="text" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm">Teléfono *
+        <input id="telefono" type="tel" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm sm:col-span-2">Email *
+        <input id="email" type="email" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm sm:col-span-2">Tipo de reporte *
+        <select id="tipoReporte" required class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>INGRESO</option>
+          <option>SALIDA</option>
+          <option>INCIDENTE</option>
+          <option>NOVEDAD</option>
+          <option>PROCESO</option>
+        </select>
+      </label>
+      <label class="text-sm sm:col-span-2">Foto de rostro *
+        <input id="fotoRostro" type="file" accept="image/*" required class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <div class="sm:col-span-2 flex items-center gap-2">
+        <input id="consent" type="checkbox" required class="border rounded">
+        <span class="text-xs">
+          Acepto los <a href="#" class="text-primary-600 underline">Términos &amp; Condiciones</a> y la
+          <a href="#" class="text-primary-600 underline">Política de Tratamiento de Datos</a>.
+        </span>
+      </div>
+      <div class="sm:col-span-2 flex justify-end pt-2">
+        <button id="go2" type="button"
+          class="px-4 py-2 rounded-md text-white bg-primary-600 hover:bg-primary-700">Continuar</button>
       </div>
     </form>
+  </section>
 
-    <!-- Preview -->
-    <div id="previewContainer" class="hidden mt-6">
-      <h2 class="text-lg font-semibold mb-2">Vista previa del JSON</h2>
-      <pre id="previewJSON" class="bg-slate-800 text-slate-100 p-4 rounded-md overflow-auto"></pre>
+  <!-- Paso 2 -->
+  <section id="step2" class="hidden-el space-y-4">
+    <div id="bloqueIngreso" class="hidden space-y-4">
+      <label class="text-sm">Modalidad *
+        <select id="ing_modalidad" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Interna</option><option>Por días</option>
+          <option>Tiempo completo</option><option>Parcial</option>
+        </select>
+      </label>
+      <label class="text-sm">Días de la semana *</label>
+      <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+        <label class="flex items-center gap-1"><input type="checkbox" value="Lunes" class="dias">Lun</label>
+        <label class="flex items-center gap-1"><input type="checkbox" value="Martes" class="dias">Mar</label>
+        <label class="flex items-center gap-1"><input type="checkbox" value="Miércoles" class="dias">Mié</label>
+        <label class="flex items-center gap-1"><input type="checkbox" value="Jueves" class="dias">Jue</label>
+        <label class="flex items-center gap-1"><input type="checkbox" value="Viernes" class="dias">Vie</label>
+        <label class="flex items-center gap-1"><input type="checkbox" value="Sábado" class="dias">Sáb</label>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <label class="text-sm">Salario *
+          <input id="ing_salario" type="number" class="mt-1 w-full rounded-md border p-2">
+        </label>
+        <label class="text-sm">Moneda *
+          <select id="ing_moneda" class="mt-1 w-full rounded-md border p-2">
+            <option>COP</option><option>USD</option>
+          </select>
+        </label>
+        <label class="text-sm">Periodicidad *
+          <select id="ing_periodicidad" class="mt-1 w-full rounded-md border p-2">
+            <option>Mensual</option><option>Quincenal</option><option>Semanal</option>
+          </select>
+        </label>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <label class="text-sm">EPS *
+          <input id="ing_eps" type="text" class="mt-1 w-full rounded-md border p-2">
+        </label>
+        <label class="text-sm">ARL *
+          <input id="ing_arl" type="text" class="mt-1 w-full rounded-md border p-2">
+        </label>
+      </div>
+      <label class="text-sm">Fecha de inicio *
+        <input id="ing_inicio" type="date" class="mt-1 w-full rounded-md border p-2">
+      </label>
     </div>
-  </main>
 
-  <script>
-    const tipoReporte = document.getElementById('tipoReporte');
-    const bloques = {
-      INGRESO: document.getElementById('bloqueIngreso'),
-      SALIDA: document.getElementById('bloqueSalida'),
-      INCIDENTE: document.getElementById('bloqueIncidente'),
-      NOVEDAD: document.getElementById('bloqueNovedad'),
-      PROCESO: document.getElementById('bloqueProceso'),
+    <div id="bloqueSalida" class="hidden space-y-4">
+      <label class="text-sm">Fecha de salida *
+        <input id="sal_fecha" type="date" class="mt-1 w-full rounded-md border p-2">
+      </label>
+      <label class="text-sm">Motivo *
+        <select id="sal_motivo" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Renuncia</option><option>Mutuo acuerdo</option>
+          <option>Justa causa</option><option>Sin justa causa</option>
+        </select>
+      </label>
+      <label class="text-sm">Recontratable *
+        <select id="sal_recontratable" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Sí</option><option>No</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="bloqueIncidente" class="hidden space-y-4">
+      <label class="text-sm">Clasificación *
+        <select id="inc_clasificacion" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Robo</option><option>Maltrato</option>
+          <option>Incumplimiento</option><option>Negligencia</option><option>Otro</option>
+        </select>
+      </label>
+      <label class="text-sm">Severidad *
+        <select id="inc_severidad" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Bajo</option><option>Medio</option><option>Alto</option><option>Crítico</option>
+        </select>
+      </label>
+      <label class="text-sm">Denuncia formal *
+        <select id="inc_denuncia" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>NO</option><option>SÍ</option>
+        </select>
+      </label>
+      <div id="inc_denuncia_detalle" class="hidden grid grid-cols-2 gap-4">
+        <label class="text-sm">Entidad
+          <input id="inc_entidad" type="text" class="mt-1 w-full rounded-md border p-2">
+        </label>
+        <label class="text-sm">Radicado
+          <input id="inc_radicado" type="text" class="mt-1 w-full rounded-md border p-2">
+        </label>
+      </div>
+      <label class="text-sm">Descripción *
+        <textarea id="inc_descripcion" rows="3" class="mt-1 w-full rounded-md border p-2"></textarea>
+      </label>
+      <label class="text-sm">Evidencias (máx 10)
+        <input id="inc_evidencias" type="file" multiple class="mt-1 w-full rounded-md border p-2">
+      </label>
+    </div>
+
+    <div id="bloqueNovedad" class="hidden space-y-4">
+      <label class="text-sm">Tipo *
+        <select id="nov_tipo" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Cambio de horario</option>
+          <option>Llamado de atención</option>
+          <option>Capacitación</option>
+          <option>Otra</option>
+        </select>
+      </label>
+      <label class="text-sm">Descripción *
+        <textarea id="nov_descripcion" rows="3" class="mt-1 w-full rounded-md border p-2"></textarea>
+      </label>
+    </div>
+
+    <div id="bloqueProceso" class="hidden space-y-4">
+      <label class="text-sm">Tipo de proceso *
+        <select id="pro_tipo" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Postulada</option>
+          <option>Entrevista</option>
+          <option>Prueba</option>
+          <option>Oferta en firma</option>
+        </select>
+      </label>
+      <label class="text-sm">Fuente *
+        <select id="pro_fuente" class="mt-1 w-full rounded-md border p-2">
+          <option value="">Seleccione</option>
+          <option>Hogar</option><option>Agencia</option><option>Plataforma</option>
+        </select>
+      </label>
+      <label class="text-sm">Fecha próximo paso *
+        <input id="pro_fecha" type="date" class="mt-1 w-full rounded-md border p-2">
+      </label>
+    </div>
+
+    <div class="flex justify-between pt-2">
+      <button id="back1" type="button"
+        class="px-4 py-2 rounded-md border">Atrás</button>
+      <button id="go3" type="button"
+        class="px-4 py-2 rounded-md text-white bg-primary-600 hover:bg-primary-700">Vista previa</button>
+    </div>
+  </section>
+
+  <!-- Paso 3 -->
+  <section id="step3" class="hidden-el space-y-4">
+    <div>
+      <h2 class="font-semibold">JSON del reporte</h2>
+      <pre id="preview" class="mt-2 bg-slate-900 text-slate-50 p-3 rounded-md overflow-auto text-xs"></pre>
+    </div>
+    <div class="flex justify-between">
+      <button id="back2" type="button"
+        class="px-4 py-2 rounded-md border">Atrás</button>
+      <button id="send" type="button"
+        class="px-4 py-2 rounded-md text-white bg-primary-600 hover:bg-primary-700">Enviar</button>
+    </div>
+  </section>
+</main>
+
+<script>
+  let step=1;
+  const goto=s=>{
+    step=s;
+    document.getElementById('step1').classList.toggle('hidden-el',step!==1);
+    document.getElementById('step2').classList.toggle('hidden-el',step!==2);
+    document.getElementById('step3').classList.toggle('hidden-el',step!==3);
+    document.getElementById('node1').className='node '+(step>1?'node-done':(step===1?'node-current':'node-upcoming'));
+    document.getElementById('node2').className='node '+(step>2?'node-done':(step===2?'node-current':'node-upcoming'));
+    document.getElementById('node3').className='node '+(step===3?'node-current':'node-upcoming');
+    document.getElementById('bar').style.width=step===1?'0%':(step===2?'50%':'100%');
+  }
+
+  // Mostrar bloque según tipo
+  const tipo=document.getElementById('tipoReporte');
+  const bloques={
+    INGRESO:document.getElementById('bloqueIngreso'),
+    SALIDA:document.getElementById('bloqueSalida'),
+    INCIDENTE:document.getElementById('bloqueIncidente'),
+    NOVEDAD:document.getElementById('bloqueNovedad'),
+    PROCESO:document.getElementById('bloqueProceso')
+  };
+  tipo.addEventListener('change',()=>{
+    Object.values(bloques).forEach(b=>b.classList.add('hidden'));
+    if(bloques[tipo.value]) bloques[tipo.value].classList.remove('hidden');
+  });
+
+  // Denuncia formal
+  const selDenuncia=document.getElementById('inc_denuncia');
+  const detDenuncia=document.getElementById('inc_denuncia_detalle');
+  selDenuncia.addEventListener('change',()=>{
+    detDenuncia.classList.toggle('hidden', selDenuncia.value!=='SÍ');
+  });
+
+  function diasSeleccionados(){
+    return Array.from(document.querySelectorAll('.dias:checked')).map(c=>c.value);
+  }
+
+  async function hashCedula(v){
+    const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+    return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function fileTo64(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); }); }
+
+  document.getElementById('go2').addEventListener('click',()=>{
+    if(document.getElementById('form1').checkValidity() && tipo.value){
+      goto(2);
+    }else{
+      document.getElementById('form1').reportValidity();
+    }
+  });
+  document.getElementById('back1').addEventListener('click',()=>goto(1));
+
+  document.getElementById('go3').addEventListener('click',async()=>{
+    const t=tipo.value;
+    // Validar campos según bloque
+    let ok=true;
+    if(t==='INGRESO'){
+      if(!document.getElementById('ing_modalidad').value || diasSeleccionados().length===0 ||
+         !document.getElementById('ing_salario').value || !document.getElementById('ing_eps').value ||
+         !document.getElementById('ing_arl').value || !document.getElementById('ing_inicio').value) ok=false;
+    }
+    if(t==='SALIDA'){
+      if(!document.getElementById('sal_fecha').value || !document.getElementById('sal_motivo').value ||
+         !document.getElementById('sal_recontratable').value) ok=false;
+    }
+    if(t==='INCIDENTE'){
+      if(!document.getElementById('inc_clasificacion').value || !document.getElementById('inc_severidad').value ||
+         !document.getElementById('inc_denuncia').value || !document.getElementById('inc_descripcion').value) ok=false;
+    }
+    if(t==='NOVEDAD'){
+      if(!document.getElementById('nov_tipo').value || !document.getElementById('nov_descripcion').value) ok=false;
+    }
+    if(t==='PROCESO'){
+      if(!document.getElementById('pro_tipo').value || !document.getElementById('pro_fuente').value ||
+         !document.getElementById('pro_fecha').value) ok=false;
+    }
+    if(!ok){ alert('Completa los campos requeridos.'); return; }
+
+    const foto=document.getElementById('fotoRostro').files[0];
+    const base={
+      idReporte:crypto.randomUUID(),
+      fechaHora:new Date().toISOString(),
+      tipo:t,
+      datosEmpleada:{
+        nombres:document.getElementById('nombres').value.trim(),
+        apellidos:document.getElementById('apellidos').value.trim(),
+        cedulaHash:await hashCedula(document.getElementById('cedula').value.trim()),
+        telefono:document.getElementById('telefono').value.trim(),
+        email:document.getElementById('email').value.trim(),
+        fotoRostro:await fileTo64(foto)
+      },
+      detalles:{},
+      evidencias:[]
     };
 
-    tipoReporte.addEventListener('change', () => {
-      Object.values(bloques).forEach(b => b.classList.add('hidden'));
-      const val = tipoReporte.value;
-      if (bloques[val]) bloques[val].classList.remove('hidden');
-    });
-
-    // Denuncia formal detalles
-    const incDenuncia = document.getElementById('inc_denuncia');
-    const incDetalleDenuncia = document.getElementById('inc_detalle_denuncia');
-    incDenuncia.addEventListener('change', () => {
-      incDetalleDenuncia.classList.toggle('hidden', incDenuncia.value !== 'SÍ');
-    });
-
-    // Helpers
-    async function hashCedula(ced) {
-      const data = new TextEncoder().encode(ced);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // Vista previa
-    document.getElementById('btnPreview').addEventListener('click', async () => {
-      const data = await construirJSON(true);
-      if (!data) return;
-      document.getElementById('previewJSON').textContent =
-        JSON.stringify(data, null, 2);
-      document.getElementById('previewContainer').classList.remove('hidden');
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    });
-
-    // Envío
-    document.getElementById('reporteForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const data = await construirJSON();
-      if (!data) return;
-      alert('Reporte listo para enviar (ver consola)');
-      console.log('Payload JSON:', data);
-      // TODO: fetch('/api/reportes', {method:'POST', body:JSON.stringify(data)})
-    });
-
-    async function construirJSON(preview=false) {
-      const tipo = tipoReporte.value;
-      if (!tipo) { alert('Seleccione el tipo de reporte'); return null; }
-
-      // Validaciones básicas
-      const nombres = document.getElementById('nombres').value.trim();
-      const apellidos = document.getElementById('apellidos').value.trim();
-      const cedula = document.getElementById('cedula').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const fotoRostro = document.getElementById('fotoRostro').files[0];
-      if (!nombres || !apellidos || !cedula || !telefono || !email || !fotoRostro) {
-        alert('Complete todos los campos obligatorios'); return null;
-      }
-
-      const consentimiento = document.getElementById('consentimiento').checked;
-      if (!consentimiento) { alert('Debe aceptar los términos y condiciones'); return null; }
-
-      const base = {
-        idReporte: crypto.randomUUID(),
-        fechaHora: new Date().toISOString(),
-        tipo,
-        datosEmpleada: {
-          nombres,
-          apellidos,
-          cedulaHash: await hashCedula(cedula),
-          telefono,
-          email,
-          fotoRostro: await fileToBase64(fotoRostro)
-        },
-        detalles: {},
-        evidencias: []
+    if(t==='INGRESO'){
+      base.detalles={
+        modalidad:document.getElementById('ing_modalidad').value,
+        dias:diasSeleccionados(),
+        salario:document.getElementById('ing_salario').value,
+        moneda:document.getElementById('ing_moneda').value,
+        periodicidad:document.getElementById('ing_periodicidad').value,
+        eps:document.getElementById('ing_eps').value,
+        arl:document.getElementById('ing_arl').value,
+        inicio:document.getElementById('ing_inicio').value
       };
-
-      // Detalles por tipo
-      if (tipo === 'INGRESO') {
-        const modalidad = document.getElementById('ing_modalidad').value;
-        const salario = document.getElementById('ing_salario').value;
-        const moneda = document.getElementById('ing_moneda').value;
-        const periodicidad = document.getElementById('ing_periodicidad').value;
-        const eps = document.getElementById('ing_eps').value;
-        const arl = document.getElementById('ing_arl').value;
-        const inicio = document.getElementById('ing_inicio').value;
-        const dias = Array.from(document.querySelectorAll('.diasSemana:checked')).map(d => d.value);
-        if (!modalidad || !salario || !eps || !arl || !inicio || dias.length===0) {
-          alert('Complete todos los campos de ingreso'); return null;
-        }
-        base.detalles = { modalidad, dias, salario, moneda, periodicidad, eps, arl, inicio };
-      }
-
-      if (tipo === 'SALIDA') {
-        const fecha = document.getElementById('sal_fecha').value;
-        const motivo = document.getElementById('sal_motivo').value;
-        const recontratable = document.getElementById('sal_recontratable').value;
-        if (!fecha || !motivo || !recontratable) {
-          alert('Complete todos los campos de salida'); return null;
-        }
-        base.detalles = { fecha, motivo, recontratable };
-      }
-
-      if (tipo === 'INCIDENTE') {
-        const clasificacion = document.getElementById('inc_clasificacion').value;
-        const severidad = document.getElementById('inc_severidad').value;
-        const denuncia = document.getElementById('inc_denuncia').value;
-        const descripcion = document.getElementById('inc_descripcion').value.trim();
-        const evidenciasInput = document.getElementById('inc_evidencias');
-        if (!clasificacion || !severidad || !denuncia || !descripcion) {
-          alert('Complete todos los campos del incidente'); return null;
-        }
-        const evidenciaFiles = Array.from(evidenciasInput.files).slice(0,10);
-        const evidencias = [];
-        for (const f of evidenciaFiles) {
-          evidencias.push({ nombre: f.name, tipo: f.type, contenido: await fileToBase64(f) });
-        }
-        base.detalles = { clasificacion, severidad, denuncia,
-          entidad: document.getElementById('inc_entidad').value.trim(),
-          radicado: document.getElementById('inc_radicado').value.trim(),
-          descripcion };
-        base.evidencias = evidencias;
-      }
-
-      if (tipo === 'NOVEDAD') {
-        const novTipo = document.getElementById('nov_tipo').value;
-        const novDescripcion = document.getElementById('nov_descripcion').value.trim();
-        if (!novTipo || !novDescripcion) {
-          alert('Complete todos los campos de la novedad'); return null;
-        }
-        base.detalles = { tipo: novTipo, descripcion: novDescripcion };
-      }
-
-      if (tipo === 'PROCESO') {
-        const proTipo = document.getElementById('pro_tipo').value;
-        const proFuente = document.getElementById('pro_fuente').value;
-        const proFecha = document.getElementById('pro_fecha').value;
-        if (!proTipo || !proFuente || !proFecha) {
-          alert('Complete todos los campos del proceso'); return null;
-        }
-        base.detalles = { tipoProceso: proTipo, fuente: proFuente, proximaFecha: proFecha };
-      }
-
-      return base;
     }
-  </script>
+    if(t==='SALIDA'){
+      base.detalles={
+        fecha:document.getElementById('sal_fecha').value,
+        motivo:document.getElementById('sal_motivo').value,
+        recontratable:document.getElementById('sal_recontratable').value
+      };
+    }
+    if(t==='INCIDENTE'){
+      base.detalles={
+        clasificacion:document.getElementById('inc_clasificacion').value,
+        severidad:document.getElementById('inc_severidad').value,
+        denuncia:document.getElementById('inc_denuncia').value,
+        entidad:document.getElementById('inc_entidad').value,
+        radicado:document.getElementById('inc_radicado').value,
+        descripcion:document.getElementById('inc_descripcion').value.trim()
+      };
+      const files=Array.from(document.getElementById('inc_evidencias').files).slice(0,10);
+      for(const f of files){
+        base.evidencias.push({nombre:f.name,tipo:f.type,contenido:await fileTo64(f)});
+      }
+    }
+    if(t==='NOVEDAD'){
+      base.detalles={
+        tipo:document.getElementById('nov_tipo').value,
+        descripcion:document.getElementById('nov_descripcion').value.trim()
+      };
+    }
+    if(t==='PROCESO'){
+      base.detalles={
+        tipoProceso:document.getElementById('pro_tipo').value,
+        fuente:document.getElementById('pro_fuente').value,
+        proximaFecha:document.getElementById('pro_fecha').value
+      };
+    }
+
+    document.getElementById('preview').textContent=JSON.stringify(base,null,2);
+    goto(3);
+  });
+  document.getElementById('back2').addEventListener('click',()=>goto(2));
+
+  document.getElementById('send').addEventListener('click',()=>{
+    alert('Reporte listo para enviar (ver consola)');
+    console.log('Payload JSON:', document.getElementById('preview').textContent);
+    // fetch('/api/reportes',{method:'POST',body:document.getElementById("preview").textContent});
+  });
+
+  goto(1);
+</script>
 </body>
 </html>
