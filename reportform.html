@@ -699,7 +699,8 @@
       document.getElementById("back1").addEventListener("click", () => goto(1));
 
       document.getElementById("go3").addEventListener("click", async () => {
-      const t = tipo.value;
+      try {
+        const t = tipo.value;
         if (!t) {
           alert("Selecciona el tipo de reporte.");
           return;
@@ -758,8 +759,8 @@
           alert("Completa los campos requeridos.");
           return;
         }
-        
-      const foto = document.getElementById("fotoRostro").files[0];
+
+        const foto = document.getElementById("fotoRostro").files[0];
         if (!foto) { alert('Adjunta la foto de rostro'); return; }
         const base = {
           idReporte: generateUUID(),
@@ -842,6 +843,10 @@
           2
         );
         goto(3);
+      } catch (err) {
+        console.error(err);
+        alert("Ocurrió un error al generar la vista previa");
+      }
       });
       document.getElementById("back2").addEventListener("click", () => goto(2));
 
@@ -866,6 +871,7 @@
     </script>
   </body>
 </html>
+
 
 
 
