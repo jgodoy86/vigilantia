@@ -76,11 +76,7 @@
       .btn-fluid{width:100%;}
     }
 
-    /* Scrollable How It Works */
-    .how-it-works{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;position:relative;}
-    .step{height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
-    .progress{position:sticky;top:0;left:0;height:4px;width:100%;background:#e2e8f0;z-index:10;}
-    .progress-bar{height:100%;width:0;background:linear-gradient(to right,#6f4bff,#3b82f6);transition:width .2s ease-out;}
+    /* How It Works section */
   </style>
 
   <!-- Schema.org FAQ -->
@@ -340,34 +336,49 @@
     </div>
   </section>
 
-  <section id="como" class="how-it-works">
-    <div class="progress">
-      <div class="progress-bar"></div>
+  <section id="como" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <img src="assets/hero-vigilantia.png" alt="Proceso de verificación" class="w-full rounded-xl shadow-soft" />
+        </div>
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">¿Cómo funciona?</h2>
+          <ol class="mt-6 space-y-6">
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">1</span>
+              <div>
+                <h3 class="font-semibold">Ingresa datos básicos</h3>
+                <p class="text-sm text-slate-600">Nombre y número de identificación de la empleada.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">2</span>
+              <div>
+                <h3 class="font-semibold">Consentimiento digital</h3>
+                <p class="text-sm text-slate-600">Firma en pantalla, obligatorio antes de consultar.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">3</span>
+              <div>
+                <h3 class="font-semibold">Generamos el reporte</h3>
+                <p class="text-sm text-slate-600">Datos colaborativos moderados y fuentes públicas disponibles.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">4</span>
+              <div>
+                <h3 class="font-semibold">Paga y visualiza</h3>
+                <p class="text-sm text-slate-600">Cancela $19.900 para ver el reporte completo.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
 
-    <article class="step bg-white">
-      <div class="text-primary-700 text-4xl font-bold mb-4">1</div>
-      <h3 class="text-xl font-semibold mb-2">Ingresa datos básicos</h3>
-      <p class="text-sm text-slate-600 max-w-md">Nombre y número de identificación de la empleada.</p>
-    </article>
-
-    <article class="step bg-slate-50">
-      <div class="text-primary-700 text-4xl font-bold mb-4">2</div>
-      <h3 class="text-xl font-semibold mb-2">Consentimiento digital</h3>
-      <p class="text-sm text-slate-600 max-w-md">Firma en pantalla, obligatorio antes de consultar.</p>
-    </article>
-
-    <article class="step bg-white">
-      <div class="text-primary-700 text-4xl font-bold mb-4">3</div>
-      <h3 class="text-xl font-semibold mb-2">Generamos el reporte</h3>
-      <p class="text-sm text-slate-600 max-w-md">Datos colaborativos moderados y fuentes públicas disponibles.</p>
-    </article>
-
-    <article class="step bg-slate-50">
-      <div class="text-primary-700 text-4xl font-bold mb-4">4</div>
-      <h3 class="text-xl font-semibold mb-2">Paga y visualiza</h3>
-      <p class="text-sm text-slate-600 max-w-md">Cancela $19.900 para ver el reporte completo.</p>
-    </article>
+    
   </section>
 
   <!-- ¿Qué incluye la consulta? -->
@@ -835,17 +846,5 @@
       });
     });
     observer.observe(hero);
-  }
-</script>
-
-<script>
-  const howItWorks = document.getElementById('como');
-  const progressBar = howItWorks ? howItWorks.querySelector('.progress-bar') : null;
-  if (howItWorks && progressBar) {
-    howItWorks.addEventListener('scroll', () => {
-      const maxScroll = howItWorks.scrollHeight - howItWorks.clientHeight;
-      const percentage = (howItWorks.scrollTop / maxScroll) * 100;
-      progressBar.style.width = `${percentage}%`;
-    });
   }
 </script>
