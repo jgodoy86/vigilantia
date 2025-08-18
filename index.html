@@ -75,6 +75,12 @@
     @media (max-width:480px){
       .btn-fluid{width:100%;}
     }
+
+    /* Scrollable How It Works */
+    .how-it-works{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;position:relative;}
+    .step{height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+    .progress{position:sticky;top:0;left:0;height:4px;width:100%;background:#e2e8f0;z-index:10;}
+    .progress-bar{height:100%;width:0;background:linear-gradient(to right,#6f4bff,#3b82f6);transition:width .2s ease-out;}
   </style>
 
   <!-- Schema.org FAQ -->
@@ -334,40 +340,34 @@
     </div>
   </section>
 
-  <section id="como" class="py-16 sm:py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">¿Cómo funciona?</h2>
-        <p class="mt-2 text-slate-600">Un proceso simple y seguro en 4 pasos</p>
-      </div>
-      <div class="mt-8 grid md:grid-cols-4 gap-6">
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
-          <div class="text-primary-700 text-3xl font-bold">1</div>
-          <h3 class="mt-2 font-semibold">Ingresa datos básicos</h3>
-          <p class="mt-1 text-sm text-slate-600">Nombre y número de identificación de la empleada.</p>
-        </div>
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
-          <div class="text-primary-700 text-3xl font-bold">2</div>
-          <h3 class="mt-2 font-semibold">Consentimiento digital</h3>
-          <p class="mt-1 text-sm text-slate-600">Firma en pantalla, obligatorio antes de consultar.</p>
-        </div>
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
-          <div class="text-primary-700 text-3xl font-bold">3</div>
-          <h3 class="mt-2 font-semibold">Generamos el reporte</h3>
-          <p class="mt-1 text-sm text-slate-600">Datos colaborativos moderados y fuentes públicas disponibles.</p>
-        </div>
-        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
-          <div class="text-primary-700 text-3xl font-bold">4</div>
-          <h3 class="mt-2 font-semibold">Paga y visualiza</h3>
-          <p class="mt-1 text-sm text-slate-600">Cancela $19.900 para ver el reporte completo.</p>
-        </div>
-      </div>
-
-      <div id="noRecords" class="hidden mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800">
-        <strong>Aún no hay historial.</strong> Tu consulta quedará activa y te notificaremos si se agregan datos.
-        <button class="ml-4 underline" onclick="document.getElementById('noRecords').classList.add('hidden')">Ocultar</button>
-      </div>
+  <section id="como" class="how-it-works">
+    <div class="progress">
+      <div class="progress-bar"></div>
     </div>
+
+    <article class="step bg-white">
+      <div class="text-primary-700 text-4xl font-bold mb-4">1</div>
+      <h3 class="text-xl font-semibold mb-2">Ingresa datos básicos</h3>
+      <p class="text-sm text-slate-600 max-w-md">Nombre y número de identificación de la empleada.</p>
+    </article>
+
+    <article class="step bg-slate-50">
+      <div class="text-primary-700 text-4xl font-bold mb-4">2</div>
+      <h3 class="text-xl font-semibold mb-2">Consentimiento digital</h3>
+      <p class="text-sm text-slate-600 max-w-md">Firma en pantalla, obligatorio antes de consultar.</p>
+    </article>
+
+    <article class="step bg-white">
+      <div class="text-primary-700 text-4xl font-bold mb-4">3</div>
+      <h3 class="text-xl font-semibold mb-2">Generamos el reporte</h3>
+      <p class="text-sm text-slate-600 max-w-md">Datos colaborativos moderados y fuentes públicas disponibles.</p>
+    </article>
+
+    <article class="step bg-slate-50">
+      <div class="text-primary-700 text-4xl font-bold mb-4">4</div>
+      <h3 class="text-xl font-semibold mb-2">Paga y visualiza</h3>
+      <p class="text-sm text-slate-600 max-w-md">Cancela $19.900 para ver el reporte completo.</p>
+    </article>
   </section>
 
   <!-- ¿Qué incluye la consulta? -->
@@ -835,5 +835,17 @@
       });
     });
     observer.observe(hero);
+  }
+</script>
+
+<script>
+  const howItWorks = document.getElementById('como');
+  const progressBar = howItWorks ? howItWorks.querySelector('.progress-bar') : null;
+  if (howItWorks && progressBar) {
+    howItWorks.addEventListener('scroll', () => {
+      const maxScroll = howItWorks.scrollHeight - howItWorks.clientHeight;
+      const percentage = (howItWorks.scrollTop / maxScroll) * 100;
+      progressBar.style.width = `${percentage}%`;
+    });
   }
 </script>
