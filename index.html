@@ -894,6 +894,7 @@
     ];
     const imageEl = document.getElementById('step-image');
     const dots = Array.from(document.querySelectorAll('[data-progress]'));
+    const mobileImages = Array.from(document.querySelectorAll('.step-image'));
     let active = 0;
 
     const setActive = (index) => {
@@ -910,6 +911,9 @@
       });
       imageEl.src = images[index];
       imageEl.alt = titles[index];
+      mobileImages.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+      });
       dots.forEach((dot, i) => {
         if (i <= index) {
           dot.classList.add('bg-primary-600');
@@ -920,6 +924,7 @@
         }
       });
     };
+    setActive(0);
 
     const onScroll = () => {
       const mid = window.innerHeight / 2;
