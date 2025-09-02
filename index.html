@@ -89,18 +89,25 @@
         opacity: 1;
       }
     }
-    
+       
     /* Typing effect styles */
     #role-typed {
       color: #6f4bff;
-      border-right: 2px solid currentColor;
       white-space: nowrap;
+    }
+    #role-typed::after {
+      content: "";
+      display: inline-block;
+      width: 0;
+      height: 1em;
+      border-right: 2px solid currentColor;
+      margin-left: 2px;
       animation: caret-blink 1s step-end infinite;
-      padding-right: 2px;
     }
     @keyframes caret-blink {
       50% { border-color: transparent; }
     }
+    
   </style>
 
   <!-- Schema.org FAQ -->
@@ -957,6 +964,7 @@
     onScroll();
   });
 </script>
+  
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const words = [
@@ -967,6 +975,9 @@
       "personal de limpieza"
     ];
     const el = document.getElementById('role-typed');
+    const maxLen = words.reduce((m, w) => Math.max(m, w.length), 0);
+    el.style.display = 'inline-block';
+    el.style.width = `${maxLen}ch`;
     let wordIndex = 0;
     let charIndex = 0;
     let deleting = false;
