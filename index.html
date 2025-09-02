@@ -89,6 +89,18 @@
         opacity: 1;
       }
     }
+    
+    /* Typing effect styles */
+    #role-typed {
+      color: #6f4bff;
+      border-right: 2px solid currentColor;
+      white-space: nowrap;
+      animation: caret-blink 1s step-end infinite;
+      padding-right: 2px;
+    }
+    @keyframes caret-blink {
+      50% { border-color: transparent; }
+    }
   </style>
 
   <!-- Schema.org FAQ -->
@@ -174,7 +186,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid md:grid-cols-2 gap-10 items-center">
       <div>
         <h1 class="hero-title text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-slate-900">
-          Verifica el <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">background de seguridad</span> y referencias de empleadas domésticas en minutos <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">con IA</span>.
+          Verifica el <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">background de seguridad</span> y referencias de <span id="role-typed"></span> en minutos <span class="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">con IA</span>.
         </h1>
         <p class="mt-5 text-lg text-slate-700">Consulta única con consentimiento digital. Información colaborativa, moderada y segura.</p>
         <div class="mt-6 flex flex-wrap gap-3 items-center">
@@ -943,5 +955,40 @@
 
     window.addEventListener('scroll', onScroll);
     onScroll();
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const words = [
+      "empleadas domésticas",
+      "niñeras",
+      "cuidadores",
+      "asistentes",
+      "personal de limpieza"
+    ];
+    const el = document.getElementById('role-typed');
+    let wordIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    const type = () => {
+      const current = words[wordIndex];
+      if (!deleting) {
+        el.textContent = current.slice(0, ++charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          return setTimeout(type, 1500);
+        }
+      } else {
+        el.textContent = current.slice(0, --charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+        }
+      }
+      setTimeout(type, deleting ? 50 : 100);
+    };
+
+    type();
   });
 </script>
