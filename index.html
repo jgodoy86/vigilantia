@@ -338,46 +338,49 @@
 
   <section id="como" class="py-16 sm:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <img src="assets/hero-vigilantia.png" alt="Proceso de verificación" class="w-full rounded-xl shadow-soft" />
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-8">¿Cómo funciona?</h2>
+      <div class="md:grid md:grid-cols-2 md:gap-10 items-start">
+        <div class="relative">
+          <img id="step-image" src="https://placehold.co/600x400?text=Paso+1" alt="Ingresa datos básicos" class="sticky top-24 w-full rounded-xl shadow-soft" />
         </div>
-        <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">¿Cómo funciona?</h2>
-          <ol class="mt-6 space-y-6">
-            <li class="flex items-start gap-4">
-              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">1</span>
-              <div>
-                <h3 class="font-semibold">Ingresa datos básicos</h3>
-                <p class="text-sm text-slate-600">Nombre y número de identificación de la empleada.</p>
-              </div>
-            </li>
-            <li class="flex items-start gap-4">
-              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">2</span>
-              <div>
-                <h3 class="font-semibold">Consentimiento digital</h3>
-                <p class="text-sm text-slate-600">Firma en pantalla, obligatorio antes de consultar.</p>
-              </div>
-            </li>
-            <li class="flex items-start gap-4">
-              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">3</span>
-              <div>
-                <h3 class="font-semibold">Generamos el reporte</h3>
-                <p class="text-sm text-slate-600">Datos colaborativos moderados y fuentes públicas disponibles.</p>
-              </div>
-            </li>
-            <li class="flex items-start gap-4">
-              <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">4</span>
-              <div>
-                <h3 class="font-semibold">Paga y visualiza</h3>
-                <p class="text-sm text-slate-600">Cancela $19.900 para ver el reporte completo.</p>
-              </div>
-            </li>
-          </ol>
+        <div class="space-y-8">
+          <div data-step class="flex gap-4 opacity-100 text-slate-900">
+            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">1</span>
+            <div>
+              <h3 class="font-semibold">Ingresa datos básicos</h3>
+              <p class="text-sm text-slate-600">Nombre y número de identificación de la empleada.</p>
+            </div>
+          </div>
+          <div data-step class="flex gap-4 opacity-50 text-slate-500">
+            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">2</span>
+            <div>
+              <h3 class="font-semibold">Consentimiento digital</h3>
+              <p class="text-sm text-slate-600">Firma en pantalla, obligatorio antes de consultar.</p>
+            </div>
+          </div>
+          <div data-step class="flex gap-4 opacity-50 text-slate-500">
+            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">3</span>
+            <div>
+              <h3 class="font-semibold">Generamos el reporte</h3>
+              <p class="text-sm text-slate-600">Datos colaborativos moderados y fuentes públicas disponibles.</p>
+            </div>
+          </div>
+          <div data-step class="flex gap-4 opacity-50 text-slate-500">
+            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold">4</span>
+            <div>
+              <h3 class="font-semibold">Paga y visualiza</h3>
+              <p class="text-sm text-slate-600">Cancela $19.900 para ver el reporte completo.</p>
+            </div>
+          </div>
         </div>
       </div>
+      <div id="progress" class="flex justify-center mt-8 space-x-2">
+        <span data-progress class="w-2 h-2 rounded-full bg-primary-600"></span>
+        <span data-progress class="w-2 h-2 rounded-full bg-slate-300"></span>
+        <span data-progress class="w-2 h-2 rounded-full bg-slate-300"></span>
+        <span data-progress class="w-2 h-2 rounded-full bg-slate-300"></span>
+      </div>
     </div>
-
     
   </section>
 
@@ -847,4 +850,68 @@
     });
     observer.observe(hero);
   }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const steps = Array.from(document.querySelectorAll('[data-step]'));
+    const images = [
+      'https://placehold.co/600x400?text=Paso+1',
+      'https://placehold.co/600x400?text=Paso+2',
+      'https://placehold.co/600x400?text=Paso+3',
+      'https://placehold.co/600x400?text=Paso+4'
+    ];
+    const titles = [
+      'Ingresa datos básicos',
+      'Consentimiento digital',
+      'Generamos el reporte',
+      'Paga y visualiza'
+    ];
+    const imageEl = document.getElementById('step-image');
+    const dots = Array.from(document.querySelectorAll('[data-progress]'));
+    let active = 0;
+
+    const setActive = (index) => {
+      if (index === active) return;
+      active = index;
+      steps.forEach((step, i) => {
+        if (i === index) {
+          step.classList.add('opacity-100', 'text-slate-900');
+          step.classList.remove('opacity-50', 'text-slate-500');
+        } else {
+          step.classList.remove('opacity-100', 'text-slate-900');
+          step.classList.add('opacity-50', 'text-slate-500');
+        }
+      });
+      imageEl.src = images[index];
+      imageEl.alt = titles[index];
+      dots.forEach((dot, i) => {
+        if (i <= index) {
+          dot.classList.add('bg-primary-600');
+          dot.classList.remove('bg-slate-300');
+        } else {
+          dot.classList.remove('bg-primary-600');
+          dot.classList.add('bg-slate-300');
+        }
+      });
+    };
+
+    const onScroll = () => {
+      const mid = window.innerHeight / 2;
+      let nearest = 0;
+      let minDist = Infinity;
+      steps.forEach((step, i) => {
+        const rect = step.getBoundingClientRect();
+        const dist = Math.abs(rect.top + rect.height / 2 - mid);
+        if (dist < minDist) {
+          minDist = dist;
+          nearest = i;
+        }
+      });
+      setActive(nearest);
+    };
+
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+  });
 </script>
