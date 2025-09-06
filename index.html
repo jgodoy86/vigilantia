@@ -107,6 +107,12 @@
     @keyframes caret-blink {
       50% { border-color: transparent; }
     }
+
+    @keyframes led-pulse {
+      0%,100% {opacity:1; box-shadow:0 0 0 0 rgba(34,197,94,0.4);}
+      50% {opacity:0.6; box-shadow:0 0 0 6px rgba(34,197,94,0);}
+    }
+    .led-active {animation:led-pulse 2s infinite;}
     
   </style>
 
@@ -391,6 +397,15 @@
           </div>
           <h3 class="mt-4 font-semibold">Reporte claro</h3>
           <p class="mt-1 text-sm text-slate-600">Documento detallado y fácil de entender con toda la información relevante.</p>
+        </article>
+                <article class="p-6 rounded-2xl bg-white border border-slate-200 shadow-soft">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white">🚨</div>
+          <h3 class="mt-4 font-semibold">Prevención Proactiva</h3>
+          <p class="mt-1 text-sm text-slate-600">Nuestra red comunitaria alerta sobre incidentes de forma proactiva, permitiendo tomar decisiones informadas antes de que ocurran problemas.</p>
+          <div class="flex items-center gap-2 mt-4">
+            <span class="h-2 w-2 rounded-full bg-green-500 shadow-sm led-active"></span>
+            <span class="text-sm text-slate-600">Sistema activo 24/7</span>
+          </div>
         </article>
       </div>
     </div>
