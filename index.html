@@ -54,9 +54,10 @@
     .tag-amber .tag-ico{background:rgba(146,64,14,.12)}
 
     /* Carrusel/rail de métodos de pago */
-    .pay-rail{scrollbar-width:thin}
-    .pay-icon{transition:transform .15s ease, filter .15s ease;}
-    .pay-icon:hover{transform:translateY(-2px) scale(1.04);filter:brightness(1.1)}
+    .pay-rail{scrollbar-width:thin;padding-bottom:4px}
+    .pay-card{display:flex;align-items:center;justify-content:center;padding:0.75rem 1.75rem;border-radius:1.25rem;background:#fff;box-shadow:0 10px 22px rgba(2,8,23,0.08);border:1px solid rgba(15,23,42,0.06);transition:transform .18s ease, box-shadow .18s ease}
+    .pay-card:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 28px rgba(2,8,23,0.12)}
+    .pay-card img{height:36px;width:auto;max-width:140px;object-fit:contain}
 
     /* --- Responsive helpers --- */
     /* Evitar que el sticky CTA tape contenido en mobile */
@@ -891,70 +892,48 @@
         <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-blue-600 text-white text-[12px]">💳</span>
         Hacer consulta ahora
       </a>
-
-      <!-- Icons de medios de pago (SVGs propios) -->
-      <div class="mt-10 flex flex-nowrap sm:flex-wrap items-center justify-center gap-5 overflow-x-auto sm:overflow-visible pay-rail px-1">
-        <!-- VISA tile -->
-        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
-          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa">
-            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
-            <text x="37" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#4a32bf" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">VISA</text>
-          </svg>
+<!-- Garantías de pago -->
+      <div class="mt-10 grid gap-4 sm:grid-cols-3 text-left max-w-4xl mx-auto">
+        <div class="flex items-start gap-3 bg-white/15 rounded-2xl px-4 py-4 shadow-soft">
+          <div class="h-10 w-10 rounded-full bg-white/20 grid place-content-center text-lg" aria-hidden="true">🔒</div>
+          <div>
+            <p class="text-sm font-semibold">Pagos 100% seguros</p>
+            <p class="mt-1 text-xs sm:text-sm opacity-90">Procesamos tus datos con cifrado TLS y antifraude activo en cada transacción.</p>
+          </div>
         </div>
-        <!-- MASTERCARD tile -->
-        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
-          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mastercard">
-            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
-            <circle cx="34" cy="29" r="10" fill="#4a32bf"/>
-            <circle cx="40" cy="29" r="10" fill="#6f4bff" fill-opacity="0.9"/>
-            <circle cx="37" cy="29" r="4" fill="#ffffff" fill-opacity="0.85"/>
-          </svg>
+        <div class="flex items-start gap-3 bg-white/15 rounded-2xl px-4 py-4 shadow-soft">
+          <div class="h-10 w-10 rounded-full bg-white/20 grid place-content-center text-lg" aria-hidden="true">🛡️</div>
+          <div>
+            <p class="text-sm font-semibold">Sello de garantía</p>
+            <p class="mt-1 text-xs sm:text-sm opacity-90">Recibe comprobante inmediato, soporte humano y reembolso si no iniciamos el proceso.</p>
+          </div>
         </div>
-        <!-- AMEX tile -->
-        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
-          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="American Express">
-            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
-            <rect x="22" y="16" width="30" height="26" rx="4" fill="#4a32bf"/>
-            <text x="37" y="29" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">AM</text>
-            <text x="37" y="37" text-anchor="middle" font-size="10" font-weight="800" fill="#ffffff" font-family="system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial">EX</text>
-          </svg>
-        </div>
-        <!-- EFECTIVO tile -->
-        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
-          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Efectivo">
-            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
-            <rect x="22" y="18" width="30" height="22" rx="6" fill="#4a32bf"/>
-            <circle cx="37" cy="29" r="5" fill="#ffffff"/>
-            <circle cx="28" cy="23" r="2" fill="#ffffff"/>
-            <circle cx="46" cy="35" r="2" fill="#ffffff"/>
-          </svg>
-        </div>
-        <!-- BANCO tile -->
-        <div class="px-3 py-3 rounded-2xl bg-white/15 shadow-soft pay-icon" aria-hidden="true">
-          <svg width="74" height="58" viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transferencia bancaria">
-            <rect x="8" y="6" width="58" height="46" rx="10" fill="#ffffff" fill-opacity="0.95"/>
-            <path d="M37 18l18 6v16H19V24l18-6z" fill="#4a32bf"/>
-            <rect x="19" y="40" width="36" height="2.6" fill="#4a32bf"/>
-          </svg>
+        <div class="flex items-start gap-3 bg-white/15 rounded-2xl px-4 py-4 shadow-soft">
+          <div class="h-10 w-10 rounded-full bg-white/20 grid place-content-center text-lg" aria-hidden="true">⚡</div>
+          <div>
+            <p class="text-sm font-semibold">Activa al instante</p>
+            <p class="mt-1 text-xs sm:text-sm opacity-90">Con tu pago confirmamos la orden y habilitamos al agente para verificar a tu empleada.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Selector técnico de pasarela -->
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto text-slate-900">
-        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
-          <input type="radio" name="gateway" value="PayU" class="accent-violet-700" checked>
-          <span class="text-sm font-medium">PayU</span>
-        </label>
-        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
-          <input type="radio" name="gateway" value="MercadoPago" class="accent-violet-700">
-          <span class="text-sm font-medium">MercadoPago</span>
-        </label>
-        <label class="flex items-center gap-2 bg-white/90 rounded-xl px-3 py-2">
-          <input type="radio" name="gateway" value="Stripe" class="accent-violet-700">
-          <span class="text-sm font-medium">Stripe</span>
-        </label>
+      <!-- Métodos de pago soportados -->
+      <div class="mt-8">
+        <p class="text-sm sm:text-base font-semibold opacity-90">Paga con tu medio favorito</p>
+        <p class="mt-1 text-xs sm:text-sm opacity-90">Aceptamos tarjetas débito y crédito Visa, Mastercard y transferencias PSE.</p>
+        <div class="mt-4 flex flex-nowrap sm:flex-wrap items-center justify-center gap-4 sm:gap-6 overflow-x-auto sm:overflow-visible pay-rail px-1">
+          <div class="pay-card" aria-label="Visa">
+            <img src="assets/payment-icons/visa.svg" alt="Visa" loading="lazy" />
+          </div>
+          <div class="pay-card" aria-label="Mastercard">
+            <img src="assets/payment-icons/mastercard.svg" alt="Mastercard" loading="lazy" />
+          </div>
+          <div class="pay-card" aria-label="PSE">
+            <img src="assets/payment-icons/pse.svg" alt="PSE" loading="lazy" />
+          </div>
+        </div>
       </div>
-      <p class="mt-3 text-xs opacity-90">* Integración técnica desde este selector; puedes ocultarlo en producción.</p>
+     
     </div>
   </section>
 
